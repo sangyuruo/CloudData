@@ -1,0 +1,16 @@
+{
+  "name": "em-cloud-data",
+  "version": "0.0.0",
+  "description": "Description for EmCloudData",
+  "private": true,
+  "license": "UNLICENSED",
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "devDependencies": {
+    "generator-jhipster": "4.10.2"
+  },
+  "engines": {
+    "node": ">=6.9.0"
+  }
+}
