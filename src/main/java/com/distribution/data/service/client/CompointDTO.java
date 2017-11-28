@@ -1,4 +1,4 @@
-package com.distribution.data.client;
+package com.distribution.data.service.client;
 
 import java.io.Serializable;
 import java.time.Instant;

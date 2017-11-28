@@ -1,10 +1,7 @@
-package com.distribution.data.client;
+package com.distribution.data.service.client;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -14,7 +11,7 @@ import java.util.Objects;
  * @author youhong
  */
 @ApiModel(description = "设备信息表 @author youhong")
-public class MeterInfo implements Serializable {
+public class MeterInfoDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -109,7 +106,7 @@ public class MeterInfo implements Serializable {
         return meterCode;
     }
 
-    public MeterInfo meterCode(String meterCode) {
+    public MeterInfoDTO meterCode(String meterCode) {
         this.meterCode = meterCode;
         return this;
     }
@@ -122,7 +119,7 @@ public class MeterInfo implements Serializable {
         return meterName;
     }
 
-    public MeterInfo meterName(String meterName) {
+    public MeterInfoDTO meterName(String meterName) {
         this.meterName = meterName;
         return this;
     }
@@ -135,7 +132,7 @@ public class MeterInfo implements Serializable {
         return registerCode;
     }
 
-    public MeterInfo registerCode(Integer registerCode) {
+    public MeterInfoDTO registerCode(Integer registerCode) {
         this.registerCode = registerCode;
         return this;
     }
@@ -148,7 +145,7 @@ public class MeterInfo implements Serializable {
         return addressCode;
     }
 
-    public MeterInfo addressCode(String addressCode) {
+    public MeterInfoDTO addressCode(String addressCode) {
         this.addressCode = addressCode;
         return this;
     }
@@ -161,7 +158,7 @@ public class MeterInfo implements Serializable {
         return organizationCode;
     }
 
-    public MeterInfo organizationCode(String organizationCode) {
+    public MeterInfoDTO organizationCode(String organizationCode) {
         this.organizationCode = organizationCode;
         return this;
     }
@@ -174,7 +171,7 @@ public class MeterInfo implements Serializable {
         return companyCode;
     }
 
-    public MeterInfo companyCode(String companyCode) {
+    public MeterInfoDTO companyCode(String companyCode) {
         this.companyCode = companyCode;
         return this;
     }
@@ -187,7 +184,7 @@ public class MeterInfo implements Serializable {
         return meterType;
     }
 
-    public MeterInfo meterType(String meterType) {
+    public MeterInfoDTO meterType(String meterType) {
         this.meterType = meterType;
         return this;
     }
@@ -200,7 +197,7 @@ public class MeterInfo implements Serializable {
         return startOffset;
     }
 
-    public MeterInfo startOffset(Integer startOffset) {
+    public MeterInfoDTO startOffset(Integer startOffset) {
         this.startOffset = startOffset;
         return this;
     }
@@ -213,7 +210,7 @@ public class MeterInfo implements Serializable {
         return numberOfRegisters;
     }
 
-    public MeterInfo numberOfRegisters(Integer numberOfRegisters) {
+    public MeterInfoDTO numberOfRegisters(Integer numberOfRegisters) {
         this.numberOfRegisters = numberOfRegisters;
         return this;
     }
@@ -226,7 +223,7 @@ public class MeterInfo implements Serializable {
         return controlAddress;
     }
 
-    public MeterInfo controlAddress(Integer controlAddress) {
+    public MeterInfoDTO controlAddress(Integer controlAddress) {
         this.controlAddress = controlAddress;
         return this;
     }
@@ -239,7 +236,7 @@ public class MeterInfo implements Serializable {
         return createdBy;
     }
 
-    public MeterInfo createdBy(String createdBy) {
+    public MeterInfoDTO createdBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -252,7 +249,7 @@ public class MeterInfo implements Serializable {
         return createTime;
     }
 
-    public MeterInfo createTime(Instant createTime) {
+    public MeterInfoDTO createTime(Instant createTime) {
         this.createTime = createTime;
         return this;
     }
@@ -265,7 +262,7 @@ public class MeterInfo implements Serializable {
         return updatedBy;
     }
 
-    public MeterInfo updatedBy(String updatedBy) {
+    public MeterInfoDTO updatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
         return this;
     }
@@ -278,7 +275,7 @@ public class MeterInfo implements Serializable {
         return updateTime;
     }
 
-    public MeterInfo updateTime(Instant updateTime) {
+    public MeterInfoDTO updateTime(Instant updateTime) {
         this.updateTime = updateTime;
         return this;
     }
@@ -291,7 +288,7 @@ public class MeterInfo implements Serializable {
         return controlCommands;
     }
 
-    public MeterInfo controlCommands(String controlCommands) {
+    public MeterInfoDTO controlCommands(String controlCommands) {
         this.controlCommands = controlCommands;
         return this;
     }
@@ -311,7 +308,7 @@ public class MeterInfo implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        MeterInfo meterInfo = (MeterInfo) o;
+        MeterInfoDTO meterInfo = (MeterInfoDTO) o;
         if (meterInfo.getId() == null || getId() == null) {
             return false;
         }
@@ -325,7 +322,7 @@ public class MeterInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "MeterInfo{" +
+        return "MeterInfoDTO{" +
             "id=" + getId() +
             ", meterCode='" + getMeterCode() + "'" +
             ", meterName='" + getMeterName() + "'" +

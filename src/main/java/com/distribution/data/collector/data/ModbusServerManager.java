@@ -1,7 +1,5 @@
 package com.distribution.data.collector.data;
 
-import com.distribution.data.client.MeterInfo;
-import com.distribution.data.client.MeterServiceClient;
 import com.distribution.data.collector.cassadra.dao.MeterService;
 import com.distribution.data.collector.cassadra.dao.ServerService;
 import com.distribution.data.collector.cassadra.entity.Meter;
@@ -28,15 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.ApplicationListener;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.*;
 

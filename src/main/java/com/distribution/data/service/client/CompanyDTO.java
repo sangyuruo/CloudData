@@ -1,8 +1,16 @@
-package com.distribution.data.client;
+package com.distribution.data.service.client;
 
+import com.distribution.data.client.AuthorizedFeignClient;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiParam;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -432,4 +440,5 @@ public class CompanyDTO implements Serializable {
             ", updateTime='" + getUpdateTime() + "'" +
             "}";
     }
+
 }

@@ -1,9 +1,9 @@
 package com.distribution.data.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.distribution.data.client.CompanyDTO;
-import com.distribution.data.client.MeterServiceClient;
-import com.distribution.data.client.OUServiceClient;
+import com.distribution.data.service.client.CompanyDTO;
+import com.distribution.data.service.client.MeterServiceClient;
+import com.distribution.data.service.client.OUServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
@@ -76,7 +76,7 @@ public class TestResource {
                 while (true) {
                     try {
                         List<CompanyDTO> companies = ouServiceClient.getAllCompanies(pageable);
-//                        List<MeterInfo> meterInfos = client.getAllMeterInfos(pageable);
+//                        List<MeterInfoDTO> meterInfos = client.getAllMeterInfos(pageable);
                         for (CompanyDTO company : companies ) {
                             logger.info( company.getCompanyName() );
                         }
