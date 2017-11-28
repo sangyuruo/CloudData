@@ -7,7 +7,7 @@ import org.mapstruct.Mapper;
 import java.util.List;
 
 /**
- * Mapper for the entity Company and its DTO CompanyDTO.
+ * Mapper for the entity CompanyDTO and its DTO CompanyDTO.
  */
 @Mapper(componentModel = "spring", uses = {})
 public interface CompanyMapper {

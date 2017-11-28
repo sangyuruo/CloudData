@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Cassandra repository for the Company entity.
+ * Cassandra repository for the CompanyDTO entity.
  */
 @Repository
 public class CompanyRepository {

@@ -23,7 +23,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 /**
- * REST controller for managing Company.
+ * REST controller for managing CompanyDTO.
  */
 @RestController
 @RequestMapping("/api")
@@ -52,7 +52,7 @@ public class CompanyResource implements ApplicationEventPublisherAware {
     @PostMapping("/companies")
     @Timed
     public ResponseEntity<CompanyDTO> createCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
-        log.debug("REST request to save Company : {}", companyDTO);
+        log.debug("REST request to save CompanyDTO : {}", companyDTO);
         if (companyDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("company", "idexists", "A new company cannot already have an ID")).body(null);
         }
@@ -84,7 +84,7 @@ public class CompanyResource implements ApplicationEventPublisherAware {
     @PutMapping("/companies")
     @Timed
     public ResponseEntity<CompanyDTO> updateCompany(@Valid @RequestBody CompanyDTO companyDTO) throws URISyntaxException {
-        log.debug("REST request to update Company : {}", companyDTO);
+        log.debug("REST request to update CompanyDTO : {}", companyDTO);
         if (companyDTO.getId() == null) {
             return createCompany(companyDTO);
         }
@@ -119,7 +119,7 @@ public class CompanyResource implements ApplicationEventPublisherAware {
     @GetMapping("/companies/{id}")
     @Timed
     public ResponseEntity<CompanyDTO> getCompany(@PathVariable String id) {
-        log.debug("REST request to get Company : {}", id);
+        log.debug("REST request to get CompanyDTO : {}", id);
         Company company = companyRepository.findOne(UUID.fromString(id));
         CompanyDTO companyDTO = companyMapper.companyToCompanyDTO(company);
         return Optional.ofNullable(companyDTO)
@@ -138,7 +138,7 @@ public class CompanyResource implements ApplicationEventPublisherAware {
     @DeleteMapping("/companies/{id}")
     @Timed
     public ResponseEntity<Void> deleteCompany(@PathVariable String id) {
-        log.debug("REST request to delete Company : {}", id);
+        log.debug("REST request to delete CompanyDTO : {}", id);
         Company company = companyRepository.findOne(UUID.fromString(id));
         companyRepository.delete(UUID.fromString(id));
         this.eventPublisher.publishEvent(createAudit(company, DEL));

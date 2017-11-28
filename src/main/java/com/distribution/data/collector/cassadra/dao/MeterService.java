@@ -6,6 +6,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
+import com.distribution.data.client.MeterServiceClient;
 import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.repository.SmartMeterRepository;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,8 @@ public class MeterService extends SmartMeterRepository {
     private Session session;
     private Mapper<Meter> mapper;
     private PreparedStatement findByServerIdStmt;
+
+
     @PostConstruct
     public void init() {
         mapper = new MappingManager(session).mapper(Meter.class);

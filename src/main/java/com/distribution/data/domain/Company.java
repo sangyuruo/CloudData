@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * A Company.
+ * A CompanyDTO.
  */
 
 @Table(name = "company")
@@ -118,7 +118,7 @@ public class Company implements Serializable {
 
     @Override
     public String toString() {
-        return "Company{" +
+        return "CompanyDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
             ", address='" + address + "'" +

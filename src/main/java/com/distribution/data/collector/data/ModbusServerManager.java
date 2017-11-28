@@ -1,5 +1,7 @@
 package com.distribution.data.collector.data;
 
+import com.distribution.data.client.MeterInfo;
+import com.distribution.data.client.MeterServiceClient;
 import com.distribution.data.collector.cassadra.dao.MeterService;
 import com.distribution.data.collector.cassadra.dao.ServerService;
 import com.distribution.data.collector.cassadra.entity.Meter;
@@ -26,11 +28,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.ApplicationListener;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,36 +45,39 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     public static final int STATUS_OKEY = 1;
     public static final int STATUS_BAD = 0;
     public static final int STATUS_PENDING = -1;
-	private static Logger logger = LoggerFactory.getLogger(ModbusServerManager.class);
-	public static final Map<Integer, IMeterParser> meterParser = new HashMap<Integer, IMeterParser>();
+    private static Logger logger = LoggerFactory.getLogger(ModbusServerManager.class);
+    public static final Map<Integer, IMeterParser> meterParser = new HashMap<Integer, IMeterParser>();
     private Map<String, ModbusMaster> connections = new HashMap<String, ModbusMaster>();
-	@Autowired
-	private ServerService serverDao;
-	@Autowired
-	private ServerStatusRepository serverStatusRepository;
-	@Autowired
-	private SmartMeterStatusRepository smartMeterStatusRepository;
-	@Autowired
-	private MeterService meterDao;
+    @Autowired
+    private ServerService serverDao;
+    @Autowired
+    private ServerStatusRepository serverStatusRepository;
+    @Autowired
+    private SmartMeterStatusRepository smartMeterStatusRepository;
+    @Autowired
+    private MeterService meterDao;
 
     private ApplicationEventPublisher eventPublisher;
 
     private Map<Integer, TcpModbusServerListener> modbusServer = new HashMap<Integer, TcpModbusServerListener>();
-	private Map<Integer, ModbusPollingServer> modbusPollingServer = new HashMap<Integer, ModbusPollingServer>();
-	private List<Server> mServer;
+    private Map<Integer, ModbusPollingServer> modbusPollingServer = new HashMap<Integer, ModbusPollingServer>();
+    private List<Server> mServer;
 
-	@PostConstruct
+
+    @PostConstruct
     public void init() {
-		StopWatch watch = new StopWatch();
-	    watch.start();
-		mServer = serverDao.findAllServer();
-		synchronized (mServer) {
-	        for(Server current : mServer) {
+
+        StopWatch watch = new StopWatch();
+        watch.start();
+        mServer = serverDao.findAllServer();
+        synchronized (mServer) {
+            for (Server current : mServer) {
                 initModbusServer(current);
-	        }
-		}
+            }
+        }
         watch.stop();
         logger.debug("Initialized the modbus config in {} ms", watch.getTotalTimeMillis());
+
     }
 
     protected void initModbusServer(Server current) {
@@ -77,14 +86,14 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         current.setSmartMeters(sms);
         logger.info("注册到系统中的服务器：" + current.getHostname() + ", IP: " + current.getIp() + ", 端口：" + current.getPort() + "。");
         initTcpModbusRequest(current);
-        if(current.getModel() != null && current.getModel() == Server.MODBUS_SERVER_MODEL_SLAVE){
+        if (current.getModel() != null && current.getModel() == Server.MODBUS_SERVER_MODEL_SLAVE) {
             initModbusSlave(current.getIpParameters(), current.isKeepAlive(), current.getReplyTimeout());
-        }else if(current.getModel() != null && current.getModel() == Server.MODBUS_SERVER_MODEL_SOCKET){
+        } else if (current.getModel() != null && current.getModel() == Server.MODBUS_SERVER_MODEL_SOCKET) {
             initModbusSocket(current.getIpParameters());
         }
         LocalDateTime now = LocalDateTime.now();
         Optional<ServerStatus> ss = serverStatusRepository.findOneByName(current.getId(), now, now);
-        if(!ss.isPresent()){
+        if (!ss.isPresent()) {
             ss = Optional.ofNullable(new ServerStatus());
             ss.get().initialize();
             ss.get().setServerId(current.getId());
@@ -93,10 +102,10 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         current.setStatus(ss.get());
     }
 
-    public void initModbusSocket(IpParameters params){
+    public void initModbusSocket(IpParameters params) {
         ModbusPollingServer mm = modbusPollingServer.get(params.getPort());
         try {
-            if(mm == null) {
+            if (mm == null) {
                 mm = new ModbusPollingServer(params.getPort());
                 PollingServerRequestHandler handler = new PollingServerRequestHandler();
                 handler.setEventPublisher(this.eventPublisher);
@@ -105,49 +114,49 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                 modbusPollingServer.put(params.getPort(), mm);
             }
         } catch (Exception e) {
-            logger.error("端口监听异常：  端口： " + params.getPort() );
+            logger.error("端口监听异常：  端口： " + params.getPort());
         }
-	}
+    }
 
 
-	public void initModbusSlave(IpParameters params, boolean keepAlive, int timeout){
-		TcpModbusServerListener mm = modbusServer.get(params.getPort());
-		try {
-			if(mm == null){
-				mm = new TcpModbusServerListener(params, keepAlive, timeout);
-				modbusServer.put(params.getPort(), mm);
-				mm.start();
-			}
-		} catch (Exception e) {
-			logger.error("端口监听异常：  端口： " + params.getPort() );
-		}
-	}
+    public void initModbusSlave(IpParameters params, boolean keepAlive, int timeout) {
+        TcpModbusServerListener mm = modbusServer.get(params.getPort());
+        try {
+            if (mm == null) {
+                mm = new TcpModbusServerListener(params, keepAlive, timeout);
+                modbusServer.put(params.getPort(), mm);
+                mm.start();
+            }
+        } catch (Exception e) {
+            logger.error("端口监听异常：  端口： " + params.getPort());
+        }
+    }
 
-	public void initTcpModbusRequest(Server current){
-		List<TcpModbusRequest> tcpRequest = new ArrayList<TcpModbusRequest>();
-    	if(current.getSmartMeters() != null){
-    		for (Meter ms : current.getSmartMeters()) {
+    public void initTcpModbusRequest(Server current) {
+        List<TcpModbusRequest> tcpRequest = new ArrayList<TcpModbusRequest>();
+        if (current.getSmartMeters() != null) {
+            for (Meter ms : current.getSmartMeters()) {
                 initSmartMeter(current, tcpRequest, ms);
             }
-    	}
-    	current.setTcpRequests(tcpRequest);
-	}
+        }
+        current.setTcpRequests(tcpRequest);
+    }
 
     protected void initSmartMeter(Server current, List<TcpModbusRequest> tcpRequest, Meter ms) {
         try {
             ms.setServer(current);
 
             TcpModbusRequest request = new TcpModbusRequest();
-            if(ms.getFunc() == 3) {
+            if (ms.getFunc() == 3) {
                 ReadHoldingRegistersRequest req = new ReadHoldingRegistersRequest(ms.getCode(), ms.getStartOffset(), ms.getNumberOfRegisters());
                 request.setRequest(req);
-            }else if(ms.getFunc() == 4){
+            } else if (ms.getFunc() == 4) {
                 ReadInputRegistersRequest req = new ReadInputRegistersRequest(ms.getCode(), ms.getStartOffset(), ms.getNumberOfRegisters());
                 request.setRequest(req);
             }
             LocalDateTime st = LocalDateTime.now();
             Optional<SmartMeterStatus> sms = smartMeterStatusRepository.findOneByName(ms.getId(), st, st);
-            if(!sms.isPresent()){
+            if (!sms.isPresent()) {
                 sms = Optional.ofNullable(new SmartMeterStatus());
                 sms.get().initialize();
                 sms.get().setMeterId(ms.getId());
@@ -163,27 +172,27 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     }
 
     public Map<Integer, TcpModbusServerListener> getModbusServer() {
-		return modbusServer;
-	}
+        return modbusServer;
+    }
 
-	public Iterable<Server> getMServer() {
-		return mServer;
-	}
+    public Iterable<Server> getMServer() {
+        return mServer;
+    }
 
-	protected  void resetSmartMeter(ModbusReloadEvent event){
-	    SmartMeter sm = (SmartMeter)event.getSource();
+    protected void resetSmartMeter(ModbusReloadEvent event) {
+        SmartMeter sm = (SmartMeter) event.getSource();
         synchronized (mServer) {
             Server temp = null;
             for (Server server : mServer) {
-                if(server.getId().equals(sm.getServerId())){
+                if (server.getId().equals(sm.getServerId())) {
                     temp = server;
                     break;
                 }
             }
-            if(event.getOperator() != ModbusReloadEvent.OPERATOR_ADD && temp != null) {
+            if (event.getOperator() != ModbusReloadEvent.OPERATOR_ADD && temp != null) {
                 List<Meter> list = (List<Meter>) temp.getSmartMeters();
                 for (Meter meter : list) {
-                    if(meter.getId().equals(sm.getId())){
+                    if (meter.getId().equals(sm.getId())) {
                         list.remove(meter);
                         break;
                     }
@@ -197,14 +206,14 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                 }
             }
 
-            if(temp != null){
-                if(event.getOperator() != ModbusReloadEvent.OPERATOR_DELETE) {
+            if (temp != null) {
+                if (event.getOperator() != ModbusReloadEvent.OPERATOR_DELETE) {
                     Meter me = meterDao.findOneMeter(sm.getId(), sm.getServerId(), sm.getCode());
                     List<Meter> list = (List<Meter>) temp.getSmartMeters();
                     initSmartMeter(temp, temp.getTcpRequests(), me);
                     list.add(me);
                 }
-            }else{
+            } else {
                 //Never
                 Server s = serverDao.findOneServer(sm.getServerId(), sm.getCompanyId());
                 initModbusServer(s);
@@ -213,24 +222,24 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         }
     }
 
-	protected void resetModbusServer(ModbusReloadEvent event){
+    protected void resetModbusServer(ModbusReloadEvent event) {
 //        if(ms.getModel() == Server.MODBUS_SERVER_MODEL_SLAVE){
         // releaseSlave(ms, event.isNew());
         synchronized (mServer) {
             ModbusServer ms = (ModbusServer) event.getSource();
-            if(event.getOperator() != ModbusReloadEvent.OPERATOR_ADD) {
+            if (event.getOperator() != ModbusReloadEvent.OPERATOR_ADD) {
                 for (Server server : mServer) {
                     if (server.getCode().equals(ms.getCode()) || server.getId().equals(ms.getId())) {
-                        try{
-                            if(ms.getModel() == Server.MODBUS_SERVER_MODEL_MASTER) {
+                        try {
+                            if (ms.getModel() == Server.MODBUS_SERVER_MODEL_MASTER) {
                                 ModbusMaster mods = connections.get(server.getId().toString());
                                 if (mods != null) {
                                     mods.destroy();
                                 }
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             logger.error("关闭串口服务器出错: id={}, exception={}", server.getCode(), e.getLocalizedMessage());
-                        }finally {
+                        } finally {
                             connections.remove(server.getId().toString());
                             mServer.remove(server);
                         }
@@ -238,7 +247,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                     }
                 }
             }
-            if(event.getOperator() != ModbusReloadEvent.OPERATOR_DELETE) {
+            if (event.getOperator() != ModbusReloadEvent.OPERATOR_DELETE) {
                 Server s = serverDao.findOneServer(ms.getId(), ms.getCompanyId());
                 initModbusServer(s);
                 mServer.add(s);
@@ -279,27 +288,27 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
 //        }
 //    }
 
-	@Override
+    @Override
     //@Async
-	public void onApplicationEvent(ModbusReloadEvent event) {
-		logger.debug("重新加载采集配置：{} 设置有改动。", (event.getType() == ModbusReloadEvent.MODBUS_SERVER ? "串口服务器" : "智能电表"));
-		try {
-		    synchronized (modbusServer) {
-		        if(event.getType() == ModbusReloadEvent.MODBUS_SERVER && event.getOperator() != ModbusReloadEvent.OPERATOR_ADD) {
+    public void onApplicationEvent(ModbusReloadEvent event) {
+        logger.debug("重新加载采集配置：{} 设置有改动。", (event.getType() == ModbusReloadEvent.MODBUS_SERVER ? "串口服务器" : "智能电表"));
+        try {
+            synchronized (modbusServer) {
+                if (event.getType() == ModbusReloadEvent.MODBUS_SERVER && event.getOperator() != ModbusReloadEvent.OPERATOR_ADD) {
                     ModbusServer ms = (ModbusServer) event.getSource();
-                    if(ms.getModel() == Server.MODBUS_SERVER_MODEL_SLAVE) {
+                    if (ms.getModel() == Server.MODBUS_SERVER_MODEL_SLAVE) {
                         MasterListenerConnectionHandler handler = null;
                         for (TcpModbusServerListener tcpModbusServerListener : modbusServer.values()) {
                             handler = tcpModbusServerListener.getMapConnections().get(ms.getCode());
-                            if(handler == null){
+                            if (handler == null) {
                                 tcpModbusServerListener.getMapConnections().get(Utils.getListenerKey(ms.getIp(), ms.getPort()));
                             }
-                            if(handler != null){
+                            if (handler != null) {
                                 try {
                                     handler.destroy();
                                 } catch (Exception e) {
                                     logger.error("关闭异常：{} ", handler.getId());
-                                }finally {
+                                } finally {
                                     tcpModbusServerListener.getMapConnections().remove(handler.getId());
 //                                    tcpModbusServerListener.getMapConnections().remove(Utils.getListenerKey(ms.getIp(), ms.getPort()));
                                 }
@@ -309,35 +318,35 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
 //                        if(handler == null){
 //                            destroySlave();
 //                        }
-                    }else if(ms.getModel() ==  Server.MODBUS_SERVER_MODEL_SOCKET){
-                       //TODO
+                    } else if (ms.getModel() == Server.MODBUS_SERVER_MODEL_SOCKET) {
+                        //TODO
 //                        for (ModbusPollingServer ps : modbusPollingServer.values()) {
 //                           ps.getClientChannels().close();
 //                        }
                     }
                 }
             }
-		}finally{
-			//init();
-			if(event.getType() == ModbusReloadEvent.MODBUS_SERVER){
-			    resetModbusServer(event);
-            }else if(event.getType() == ModbusReloadEvent.MODBUS_METER){
-			    resetSmartMeter(event);
+        } finally {
+            //init();
+            if (event.getType() == ModbusReloadEvent.MODBUS_SERVER) {
+                resetModbusServer(event);
+            } else if (event.getType() == ModbusReloadEvent.MODBUS_METER) {
+                resetSmartMeter(event);
             }
-		}
-	}
+        }
+    }
 
-	@PreDestroy
-	protected void destroySocket(){
+    @PreDestroy
+    protected void destroySocket() {
         for (Integer key : modbusPollingServer.keySet()) {
             ModbusPollingServer ss = modbusPollingServer.get(key);
-            if(ss != null){
+            if (ss != null) {
                 ss.close();
             }
         }
     }
 
-	@PreDestroy
+    @PreDestroy
     protected void destroySlave() {
         for (Integer server : modbusServer.keySet()) {
             TcpModbusServerListener ss = modbusServer.get(server);

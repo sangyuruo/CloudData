@@ -8,7 +8,7 @@ import java.util.UUID;
 
 
 /**
- * A DTO for the Company entity.
+ * A DTO for the CompanyDTO entity.
  */
 public class CompanyDTO implements Serializable {
 
