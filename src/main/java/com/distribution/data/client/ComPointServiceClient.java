@@ -11,7 +11,8 @@ import java.util.List;
 
 @AuthorizedFeignClient(name = "EmCloudCpi")
 public interface ComPointServiceClient {
-    @GetMapping(value = "/api/meter-info" , consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/api/meter-info" ,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public List<CompointDTO> getAllMeterInfos(@ApiParam Pageable pageable) ;
