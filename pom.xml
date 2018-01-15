@@ -93,7 +93,7 @@
 
 
         <!-- we add -->
-        <distribution.plugins>0.1.2</distribution.plugins>
+        <distribution.plugins>0.1.3</distribution.plugins>
         <javax.inject.version>1</javax.inject.version>
         <jna.version>4.2.2</jna.version>
         <elasticsearch.version>2.4.3</elasticsearch.version>
