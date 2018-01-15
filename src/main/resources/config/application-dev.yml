@@ -35,19 +35,26 @@ spring:
         stream:
             kafka:
                 binder:
-                    brokers: localhost
-                    zk-nodes: localhost
+                    brokers: 192.168.2.202
+                    zk-nodes: 192.168.2.202
+                    healthTimeout: 60
             bindings:
                 output:
                     destination: topic-jhipster
     data:
         cassandra:
-            contactPoints: localhost
+            contactPoints: 192.168.1.4
             protocolVersion: V4
             compression: LZ4
             keyspaceName: Wamoli
             username:
             password:
+        elasticsearch:
+            cluster-name: company
+            cluster-nodes: 192.168.1.4:9300
+            local: false
+            repositories:
+                enable: true
     mail:
         host: localhost
         port: 25
@@ -58,8 +65,8 @@ spring:
     thymeleaf:
         cache: false
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
-        base-url: http://localhost:9411
-        enabled: false
+        base-url: http://192.168.2.202:9411
+        enabled: true
         locator:
             discovery:
                 enabled: true
@@ -126,8 +133,8 @@ jhipster:
             report-frequency: 60 # in seconds
     logging:
         logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-            enabled: false
-            host: localhost
+            enabled: true
+            host: log.emcloud.com
             port: 5000
             queue-size: 512
         spectator-metrics: # Reports Spectator Circuit Breaker metrics in the logs
