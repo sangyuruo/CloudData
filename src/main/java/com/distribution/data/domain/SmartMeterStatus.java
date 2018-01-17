@@ -23,7 +23,7 @@ public class SmartMeterStatus implements Serializable {
 
 
     @ClusteringColumn
-    private UUID meterId;
+    private String meterId;
 
 
     private ZonedDateTime lastUpdate;
@@ -56,16 +56,16 @@ public class SmartMeterStatus implements Serializable {
     }
 
 
-    public SmartMeterStatus meterId(UUID meterId) {
+    public SmartMeterStatus meterId(String meterId) {
         this.meterId = meterId;
         return this;
     }
 
-    public UUID getMeterId() {
+    public String getMeterId() {
 		return meterId;
 	}
 
-	public void setMeterId(UUID meterId) {
+	public void setMeterId(String meterId) {
 		this.meterId = meterId;
 	}
 

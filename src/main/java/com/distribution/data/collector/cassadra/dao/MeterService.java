@@ -24,7 +24,7 @@ public class MeterService extends SmartMeterRepository {
     private PreparedStatement findByServerIdStmt;
 
 
-    @PostConstruct
+  /*  @PostConstruct
     public void init() {
         mapper = new MappingManager(session).mapper(Meter.class);
         findByServerIdStmt = session.prepare("SELECT * FROM smartMeter where serverId=:serverId allow filtering");
@@ -37,7 +37,7 @@ public class MeterService extends SmartMeterRepository {
 	        session.execute(stmt).all().stream().map(
 	            row -> {
                     return getMeter(row);
-	            }
+                }
 	        ).forEach(smartMeters::add);
 	        return smartMeters;
 	}
@@ -67,5 +67,5 @@ public class MeterService extends SmartMeterRepository {
         smartMeter.setFunc(func);
         return smartMeter;
     }
-
+*/
 }

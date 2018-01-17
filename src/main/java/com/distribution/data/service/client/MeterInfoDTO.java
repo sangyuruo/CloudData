@@ -1,7 +1,10 @@
 package com.distribution.data.service.client;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -48,9 +51,37 @@ public class MeterInfoDTO implements Serializable {
     private String companyCode;
 
     /**
+     * 串口编码
+     */
+    private String comPointCode;
+
+    /**
+     * 设备类型代码
+     */
+    private Integer meterTypeCode;
+
+    /**
      * 设备类型
      */
     private String meterType;
+    /**
+     * 经度
+     */
+    private Double longitude;
+
+    /**
+     * 纬度
+     */
+    private Double latitude;
+    /**
+     * 纬度
+     */
+    private Long longcode;
+
+    /**
+     * 纬度
+     */
+    /*private int func=3;*/
 
     /**
      * 起始偏移
@@ -92,6 +123,24 @@ public class MeterInfoDTO implements Serializable {
      */
     private String controlCommands;
 
+    /**
+     * 大Endian
+     */
+    private Boolean bigEndian;
+    /**
+     * 允许重复
+     */
+    private Boolean allowDuplicate;
+
+    /**
+     * 计算
+     */
+    private Integer calculates;
+
+    /**
+     * 是否有效
+     */
+    private Boolean enable;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -191,6 +240,105 @@ public class MeterInfoDTO implements Serializable {
 
     public void setMeterType(String meterType) {
         this.meterType = meterType;
+    }
+
+    public String getComPointCode() {
+        return comPointCode;
+    }
+    public MeterInfoDTO comPointCode(String comPointCode) {
+        this.comPointCode = comPointCode;
+        return this;
+    }
+    public void setComPointCode(String comPointCode) {
+        this.comPointCode = comPointCode;
+    }
+
+    public Integer getMeterTypeCode() {
+        return meterTypeCode;
+    }
+    public MeterInfoDTO meterTypeCode(Integer meterTypeCode) {
+        this.meterTypeCode = meterTypeCode;
+        return this;
+    }
+    public void setMeterTypeCode(Integer meterTypeCode) {
+        this.meterTypeCode = meterTypeCode;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+    public MeterInfoDTO longitude(double longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+    public MeterInfoDTO latitude(double latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Long getLongcode() {
+        return longcode;
+    }
+    public MeterInfoDTO longcode(Long longcode) {
+        this.longcode = longcode;
+        return this;
+    }
+    public void setLongcode(Long longcode) {
+        this.longcode = longcode;
+    }
+
+    public Boolean getBigEndian() {
+        return bigEndian;
+    }
+    public MeterInfoDTO bigEndian(Boolean bigEndian) {
+        this.bigEndian = bigEndian;
+        return this;
+    }
+    public void setBigEndian(Boolean bigEndian) {
+        this.bigEndian = bigEndian;
+    }
+
+    public Boolean getAllowDuplicate() {
+        return allowDuplicate;
+    }
+    public MeterInfoDTO allowDuplicate(Boolean allowDuplicate) {
+        this.allowDuplicate = allowDuplicate;
+        return this;
+    }
+    public void setAllowDuplicate(Boolean allowDuplicate) {
+        this.allowDuplicate = allowDuplicate;
+    }
+
+    public Integer getCalculates() {
+        return calculates;
+    }
+    public MeterInfoDTO calculates(Integer calculates) {
+        this.calculates = calculates;
+        return this;
+    }
+    public void setCalculates(Integer calculates) {
+        this.calculates = calculates;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+    public MeterInfoDTO enable(boolean enable) {
+        this.enable = enable;
+        return this;
+    }
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
     public Integer getStartOffset() {

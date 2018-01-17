@@ -1,5 +1,4 @@
 package com.distribution.data.collector.data;
-
 import com.distribution.data.collector.cassadra.dao.MeterService;
 import com.distribution.data.collector.cassadra.dao.ServerService;
 import com.distribution.data.collector.cassadra.entity.Meter;
@@ -15,6 +14,7 @@ import com.distribution.data.domain.SmartMeter;
 import com.distribution.data.domain.SmartMeterStatus;
 import com.distribution.data.repository.ServerStatusRepository;
 import com.distribution.data.repository.SmartMeterStatusRepository;
+import com.distribution.data.service.MeterInfoService;
 import com.distribution.modbus.protocol.ModbusMaster;
 import com.distribution.modbus.protocol.ip.IpParameters;
 import com.distribution.modbus.protocol.msg.ReadHoldingRegistersRequest;
@@ -28,12 +28,10 @@ import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.util.*;
-
 @Component
 public class ModbusServerManager implements ApplicationListener<ModbusReloadEvent>, ApplicationEventPublisherAware {
     public static final int STATUS_OKEY = 1;
@@ -48,8 +46,10 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     private ServerStatusRepository serverStatusRepository;
     @Autowired
     private SmartMeterStatusRepository smartMeterStatusRepository;
+   /* @Autowired
+    private MeterService meterDao;*/
     @Autowired
-    private MeterService meterDao;
+    private MeterInfoService meterDao;
 
     private ApplicationEventPublisher eventPublisher;
 
@@ -76,7 +76,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
 
     protected void initModbusServer(Server current) {
         current.getIpParameters();
-        List<Meter> sms = meterDao.findMetersByServerId(current.getId());
+        List<Meter> sms = meterDao.findMetersByServerId(current.getId().toString());
         current.setSmartMeters(sms);
         logger.info("注册到系统中的服务器：" + current.getHostname() + ", IP: " + current.getIp() + ", 端口：" + current.getPort() + "。");
         initTcpModbusRequest(current);
@@ -207,12 +207,12 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                     initSmartMeter(temp, temp.getTcpRequests(), me);
                     list.add(me);
                 }
-            } else {
+            } /*else {
                 //Never
                 Server s = serverDao.findOneServer(sm.getServerId(), sm.getCompanyId());
                 initModbusServer(s);
                 mServer.add(s);
-            }
+            }*/
         }
     }
 
