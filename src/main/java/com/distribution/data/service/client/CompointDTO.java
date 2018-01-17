@@ -1,19 +1,28 @@
 package com.distribution.data.service.client;
 
+import com.distribution.data.domain.Company;
+import com.distribution.data.domain.ServerStatus;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * 采集点信息表
+ *
  * @author Capejor
  */
 public class CompointDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private ServerStatus status;
 
-    private Long id;
+    private UUID companyId;
+    private Company company;
+
+    private String id;
 
     /**
      * 设备编码 外键
@@ -86,6 +95,10 @@ public class CompointDTO implements Serializable {
     private Integer connectMode;
 
     /**
+     * 是否包装
+     */
+    private Boolean encapsulated;
+    /**
      * 创建人员
      */
     private String createdBy;
@@ -106,11 +119,11 @@ public class CompointDTO implements Serializable {
     private Instant updateTime;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -392,5 +405,21 @@ public class CompointDTO implements Serializable {
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", updateTime='" + getUpdateTime() + "'" +
             "}";
+    }
+
+    public Boolean isEncapsulated() {
+        return encapsulated;
+    }
+
+    public void setEncapsulated(Boolean encapsulated) {
+        this.encapsulated = encapsulated;
+    }
+
+    public ServerStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ServerStatus status) {
+        this.status = status;
     }
 }

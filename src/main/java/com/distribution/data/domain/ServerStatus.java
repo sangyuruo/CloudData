@@ -19,7 +19,7 @@ public class ServerStatus implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PartitionKey
-    private UUID serverId;
+    private String serverId;
 
     @ClusteringColumn
     private UUID id;
@@ -42,16 +42,16 @@ public class ServerStatus implements Serializable {
         this.id = id;
     }
 
-    public ServerStatus serverId(UUID serverId) {
+    public ServerStatus serverId(String serverId) {
     	this.serverId = serverId;
         return this;
     }
 
-    public UUID getServerId() {
+    public String getServerId() {
 		return serverId;
 	}
 
-	public void setServerId(UUID serverId) {
+	public void setServerId(String serverId) {
 		this.serverId = serverId;
 	}
 

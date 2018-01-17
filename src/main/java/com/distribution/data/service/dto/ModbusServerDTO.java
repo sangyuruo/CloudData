@@ -17,7 +17,7 @@ import java.util.*;
  * A DTO for the ModbusSlave entity.
  */
 public class ModbusServerDTO implements Serializable {
-    private UUID id;
+    private String id;
 
     @NotNull
     @Size(max = 64)
@@ -97,11 +97,11 @@ public class ModbusServerDTO implements Serializable {
 		this.company = company;
 	}
 
-	public UUID getId() {
+	public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getHostname() {

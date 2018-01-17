@@ -65,9 +65,9 @@ public class ModbusServerRepository {
         truncateByNameStmt = session.prepare("TRUNCATE modbusServer_by_hostname");
     }
 
-    public Optional<ModbusServer> findOneById(UUID id) {
+    public Optional<ModbusServer> findOneById(String id) {
         BoundStatement stmt = findOneByIdStmt.bind();
-        stmt.setUUID("id", id);
+        stmt.setString("id", id);
         return findOneFromIndex(stmt);
     }
 
@@ -95,9 +95,9 @@ public class ModbusServerRepository {
 
     protected ModbusServer getModbusServer(Row row) {
         ModbusServer modbusServer = new ModbusServer();
-        modbusServer.setId(row.getUUID("id"));
+        modbusServer.setId(row.getString("id"));
         modbusServer.setHostname(row.getString("hostname"));
-        modbusServer.setCompanyId(row.getUUID("companyId"));
+        modbusServer.setCompanyId(row.getString("companyId"));
         modbusServer.setCode(row.getString("code"));
         modbusServer.setIp(row.getString("ip"));
         modbusServer.setPort(row.getInt("port"));
@@ -126,45 +126,45 @@ public class ModbusServerRepository {
         return findOneFromIndex(stmt);
     }
 
-    public ModbusServer save(ModbusServer modbusServer) {
-        if (modbusServer.getId() == null) {
-            modbusServer.setId(UUID.randomUUID());
-        }else{
+//    public ModbusServer save(ModbusServer modbusServer) {
+//        if (modbusServer.getId() == null) {
+//            modbusServer.setId(UUID.randomUUID());
+//        }else{
 //        	ModbusServer oldSer = mapper.get(modbusServer.getId(), modbusServer.getCompanyId());
-            Optional<ModbusServer> oldSer = findOneById(modbusServer.getId());
-        	if(oldSer.isPresent()){
-        		session.execute(deleteByNameStmt.bind().setString("hostname", oldSer.get().getHostname()));
-                session.execute(deleteByCodeStmt.bind().setString("code", oldSer.get().getCode()));
-                //delete(oldSer.get().getId(), oldSer.get().getCompanyId());
-                session.execute(deleteByIdAndCompanyIdStmt.bind().setUUID("id", oldSer.get().getId()).setUUID("companyId", oldSer.get().getCompanyId()));
-        	}
-        }
-        BatchStatement batch = new BatchStatement();
-        batch.add(mapper.saveQuery(modbusServer));
-        batch.add(insertByCodeStmt.bind()
-                .setString("code", modbusServer.getCode()).setUUID("companyId", modbusServer.getCompanyId())
-                .setUUID("id", modbusServer.getId()));
-        batch.add(insertByNameStmt.bind()
-                .setString("hostname", modbusServer.getHostname()).setUUID("companyId", modbusServer.getCompanyId())
-                .setUUID("id", modbusServer.getId()));
-        session.execute(batch);
-        return modbusServer;
-    }
-
-    public void delete(UUID id, UUID companyId) {
-    	BatchStatement batch = new BatchStatement();
-    	ModbusServer com = findOne(id, companyId);
-        batch.add(mapper.deleteQuery(com));
-        batch.add(deleteByNameStmt.bind().setString("hostname", com.getHostname()));
-        batch.add(deleteByCodeStmt.bind().setString("code", com.getCode()));
-        session.execute(batch);
-    }
-
-    public void deleteAll() {
-		BatchStatement batch = new BatchStatement();
-		batch.add(truncateStmt.bind());
-		batch.add(truncateByNameStmt.bind());
-        batch.add(truncateByCodeStmt.bind());
-		session.execute(batch);
-    }
+//            Optional<ModbusServer> oldSer = findOneById(modbusServer.getId());
+//        	if(oldSer.isPresent()){
+//        		session.execute(deleteByNameStmt.bind().setString("hostname", oldSer.get().getHostname()));
+//                session.execute(deleteByCodeStmt.bind().setString("code", oldSer.get().getCode()));
+//                //delete(oldSer.get().getId(), oldSer.get().getCompanyId());
+//                session.execute(deleteByIdAndCompanyIdStmt.bind().setString("id", oldSer.get().getId()).setString("companyId", oldSer.get().getCompanyId()));
+//           	}
+//       }
+//        BatchStatement batch = new BatchStatement();
+//        batch.add(mapper.saveQuery(modbusServer));
+//        batch.add(insertByCodeStmt.bind()
+//                .setString("code", modbusServer.getCode()).setString("companyId", modbusServer.getCompanyId())
+//                .setString("id", modbusServer.getId()));
+//        batch.add(insertByNameStmt.bind()
+//                .setString("hostname", modbusServer.getHostname()).setString("companyId", modbusServer.getCompanyId())
+//                .setString("id", modbusServer.getId()));
+//        session.execute(batch);
+//        return modbusServer;
+//    }
+//
+//    public void delete(UUID id, UUID companyId) {
+//    	BatchStatement batch = new BatchStatement();
+//    	ModbusServer com = findOne(id, companyId);
+//        batch.add(mapper.deleteQuery(com));
+//        batch.add(deleteByNameStmt.bind().setString("hostname", com.getHostname()));
+//        batch.add(deleteByCodeStmt.bind().setString("code", com.getCode()));
+//        session.execute(batch);
+//    }
+//
+//    public void deleteAll() {
+//		BatchStatement batch = new BatchStatement();
+//		batch.add(truncateStmt.bind());
+//		batch.add(truncateByNameStmt.bind());
+//        batch.add(truncateByCodeStmt.bind());
+//		session.execute(batch);
+//    }
 }

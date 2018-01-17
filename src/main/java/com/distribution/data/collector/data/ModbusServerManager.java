@@ -1,7 +1,6 @@
 package com.distribution.data.collector.data;
 
 import com.distribution.data.collector.cassadra.dao.MeterService;
-import com.distribution.data.collector.cassadra.dao.ServerService;
 import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.event.ModbusReloadEvent;
@@ -15,6 +14,7 @@ import com.distribution.data.domain.SmartMeter;
 import com.distribution.data.domain.SmartMeterStatus;
 import com.distribution.data.repository.ServerStatusRepository;
 import com.distribution.data.repository.SmartMeterStatusRepository;
+import com.distribution.data.service.ComPointService;
 import com.distribution.modbus.protocol.ModbusMaster;
 import com.distribution.modbus.protocol.ip.IpParameters;
 import com.distribution.modbus.protocol.msg.ReadHoldingRegistersRequest;
@@ -43,7 +43,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     public static final Map<Integer, IMeterParser> meterParser = new HashMap<Integer, IMeterParser>();
     private Map<String, ModbusMaster> connections = new HashMap<String, ModbusMaster>();
     @Autowired
-    private ServerService serverDao;
+    private ComPointService serverDao;
     @Autowired
     private ServerStatusRepository serverStatusRepository;
     @Autowired
@@ -51,12 +51,14 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     @Autowired
     private MeterService meterDao;
 
+    @Autowired
+    private ComPointService comPointService;
+
     private ApplicationEventPublisher eventPublisher;
 
     private Map<Integer, TcpModbusServerListener> modbusServer = new HashMap<Integer, TcpModbusServerListener>();
     private Map<Integer, ModbusPollingServer> modbusPollingServer = new HashMap<Integer, ModbusPollingServer>();
     private List<Server> mServer;
-
 
     @PostConstruct
     public void init() {
@@ -64,7 +66,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         StopWatch watch = new StopWatch();
         watch.start();
         mServer = serverDao.findAllServer();
-        synchronized (mServer) {
+       synchronized (mServer) {
             for (Server current : mServer) {
                 initModbusServer(current);
             }
@@ -365,5 +367,13 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         this.eventPublisher = applicationEventPublisher;
+    }
+
+    public ComPointService getComPointService() {
+        return comPointService;
+    }
+
+    public void setComPointService(ComPointService comPointService) {
+        this.comPointService = comPointService;
     }
 }

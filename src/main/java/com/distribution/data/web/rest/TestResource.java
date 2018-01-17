@@ -1,7 +1,10 @@
 package com.distribution.data.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.distribution.data.collector.cassadra.entity.Server;
+import com.distribution.data.service.ComPointService;
 import com.distribution.data.service.client.CompanyDTO;
+import com.distribution.data.service.client.CompointDTO;
 import com.distribution.data.service.client.MeterServiceClient;
 import com.distribution.data.service.client.OUServiceClient;
 import org.slf4j.Logger;
@@ -18,11 +21,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class TestResource {
+
+
     @Inject
     MeterServiceClient client;
 
     @Inject
     OUServiceClient ouServiceClient;
+
+
+    private    ComPointService comPointService;
     private static Logger logger = LoggerFactory.getLogger(TestResource.class);
     @GetMapping("/test")
     @Timed
@@ -75,7 +83,7 @@ public class TestResource {
             public void run() {
                 while (true) {
                     try {
-                        List<CompanyDTO> companies = ouServiceClient.getAllCompanies(pageable);
+                        List<CompanyDTO> companies = ouServiceClient.getAllCompanies();
 //                        List<MeterInfoDTO> meterInfos = client.getAllMeterInfos(pageable);
                         for (CompanyDTO company : companies ) {
                             logger.info( company.getCompanyName() );
@@ -92,5 +100,10 @@ public class TestResource {
                 }
             }
         }).start();
+
+
+        List<Server> serverList=comPointService.findAllServer();
+        System.out.println(serverList.toString());
     }
+
 }

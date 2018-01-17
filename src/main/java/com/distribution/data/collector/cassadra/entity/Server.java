@@ -15,8 +15,8 @@ public class Server extends ModbusServer{
 	public static final int MODBUS_SERVER_MODEL_SOCKET = 3;
 	private static final long serialVersionUID = 2622677934936388404L;
 
-	@Transient
-	private IpParameters ipParameters;
+    @Transient
+    private IpParameters ipParameters;
 	public IpParameters getIpParameters(){
 		if(ipParameters == null){
 			ipParameters = new IpParameters();
@@ -28,9 +28,11 @@ public class Server extends ModbusServer{
 	}
 	@Transient
 	private List<Meter> smartMeters;
-
 	@Transient
 	private List<TcpModbusRequest> tcpRequests;
+
+
+
 	public List<Meter> getSmartMeters() {
 		return smartMeters;
 	}

@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class MeterService extends SmartMeterRepository {
@@ -30,7 +29,7 @@ public class MeterService extends SmartMeterRepository {
         findByServerIdStmt = session.prepare("SELECT * FROM smartMeter where serverId=:serverId allow filtering");
     }
 
-	 public List<Meter> findMetersByServerId(UUID serverId) {
+	 public List<Meter> findMetersByServerId(String serverId) {
 	        List<Meter> smartMeters = new ArrayList<>();
 	        BoundStatement stmt =  findByServerIdStmt.bind();
 	        stmt.setUUID("serverId", serverId);
@@ -41,7 +40,7 @@ public class MeterService extends SmartMeterRepository {
 	        ).forEach(smartMeters::add);
 	        return smartMeters;
 	}
-    public Meter findOneMeter(UUID id, UUID serverId, int code) {
+    public Meter findOneMeter(Long id, String serverId, int code) {
         return mapper.get(id, serverId, code);
     }
     protected Meter getMeter(Row row) {
