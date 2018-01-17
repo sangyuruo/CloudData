@@ -156,7 +156,7 @@ public class SmartMeterRepository {
     	return smartMeters;
     }
 
-    public SmartMeter findOne(UUID id, UUID serverId, int code) {
+    public SmartMeter findOne(Long id, String serverId, int code) {
         return mapper.get(id, serverId, code);
     }
 
@@ -184,7 +184,7 @@ public class SmartMeterRepository {
         return smartMeter;
     }
 
-    public void delete(UUID id, UUID serverId, int code) {
+    public void delete(Long id, String serverId, int code) {
 //        mapper.delete(id, serverId);
         BatchStatement batch = new BatchStatement();
         SmartMeter com = findOne(id, serverId, code);
@@ -202,7 +202,7 @@ public class SmartMeterRepository {
 		session.execute(batch);
     }
 
-    public Optional<SmartMeter> findOneById(UUID id) {
+    public Optional<SmartMeter> findOneById(Long id) {
         BoundStatement stmt = findOneByIdStmt.bind();
         stmt.setUUID("id", id);
         return findOneFromIndex(stmt);

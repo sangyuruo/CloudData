@@ -79,7 +79,11 @@ public class SmartMeterStatusRepository {
         return mapper.get(id, meterId);
     }
 
+<<<<<<< HEAD
     public Optional<SmartMeterStatus> findOneByName(String meterId, LocalDateTime start, LocalDateTime end) {
+=======
+    public Optional<SmartMeterStatus> findOneByName(Long meterId, LocalDateTime start, LocalDateTime end) {
+>>>>>>> ef6010d36ff0742e1e637c9f0e766729649b10f4
     	BoundStatement stmt = findOneByMeterIdStmt.bind();
         stmt.setString("meterId", meterId);
         UUID st = UUIDs.startOf(DateUtils.getTodayStart(start).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());

@@ -27,37 +27,35 @@ public class ServerService extends ModbusServerRepository {
 
     @PostConstruct
     public void init() {
-    	mapper = new MappingManager(session).mapper(Server.class);
-    	findAllServerStmt = session.prepare("SELECT * FROM modbusServer");
-    	findModbusServerByCompanyIdStmt = session.prepare("SELECT * FROM modbusServer where companyId = :companyId allow filtering ");
-    	findOneByNameStmt = session.prepare("SELECT id, companyId FROM modbusServer_by_hostname where hostname = :hostname");
+        mapper = new MappingManager(session).mapper(Server.class);
+        findAllServerStmt = session.prepare("SELECT * FROM modbusServer");
+        findModbusServerByCompanyIdStmt = session.prepare("SELECT * FROM modbusServer where companyId = :companyId allow filtering ");
+        findOneByNameStmt = session.prepare("SELECT id, companyId FROM modbusServer_by_hostname where hostname = :hostname");
     }
 
-    private Optional<Server> findOneServerFromIndex(BoundStatement stmt) {
-        ResultSet rs = session.execute(stmt);
-        if (rs.isExhausted()) {
-            return Optional.empty();
-        }
-        Row row = rs.one();
-        Optional<UUID> id = Optional.ofNullable(row.getUUID("id"));
-        Optional<UUID> companyId = Optional.ofNullable(row.getUUID("companyId"));
-        return Optional.ofNullable(mapper.get(id.get(), companyId.get()));
-    }
+//    private Optional<Server> findOneServerFromIndex(BoundStatement stmt) {
+//        ResultSet rs = session.execute(stmt);
+//        if (rs.isExhausted()) {
+//            return Optional.empty();
+//        }
+//        Row row = rs.one();
+//        Optional<UUID> id = Optional.ofNullable(row.getUUID("id"));
+//        Optional<UUID> companyId = Optional.ofNullable(row.getUUID("companyId"));
+//        return Optional.ofNullable(mapper.get(id.get(), companyId.get()));
+//    }
+//
+//    public Optional<Server> findOneServerByName(String hostname) {
+//        BoundStatement stmt = findOneByNameStmt.bind();
+//        stmt.setString("hostname", hostname);
+//        return findOneServerFromIndex(stmt);
+//    }
+//
 
-    public Optional<Server> findOneServerByName(String hostname) {
-        BoundStatement stmt = findOneByNameStmt.bind();
-        stmt.setString("hostname", hostname);
-        return findOneServerFromIndex(stmt);
-    }
-
-    public Server findOneServer(UUID id, UUID companyId) {
-        return mapper.get(id, companyId);
-    }
-
-	public List<Server> findModbusServerByCompanyId(UUID companyId){
+    //
+	public List<Server> findModbusServerByCompanyId(String companyId){
 		List<Server> modbusServers = new ArrayList<>();
         BoundStatement stmt =  findModbusServerByCompanyIdStmt.bind();
-        stmt.setUUID("companyId", companyId);
+        stmt.setString("companyId", companyId);
         session.execute(stmt).all().stream().map(
             row -> {
                 return getServer(row);
@@ -65,10 +63,13 @@ public class ServerService extends ModbusServerRepository {
         ).forEach(modbusServers::add);
         return modbusServers;
 	}
+    public Server findOneServer(UUID id, UUID companyId) {
+        return mapper.get(id, companyId);
+    }
 
-	public List<Server> findAllServer() {
+    public List<Server> findAllServer() {
         List<Server> modbusServers = new ArrayList<>();
-        BoundStatement stmt =  findAllServerStmt.bind();
+        BoundStatement stmt = findAllServerStmt.bind();
         session.execute(stmt).all().stream().map(
             row -> {
                 return getServer(row);
@@ -79,9 +80,9 @@ public class ServerService extends ModbusServerRepository {
 
     protected Server getServer(Row row) {
         Server modbusServer = new Server();
-        modbusServer.setId(row.getUUID("id"));
+        modbusServer.setId(row.getString("id"));
         modbusServer.setHostname(row.getString("hostname"));
-        modbusServer.setCompanyId(row.getUUID("companyId"));
+        modbusServer.setCompanyId(row.getString("companyId"));
         modbusServer.setCode(row.getString("code"));
         modbusServer.setIp(row.getString("ip"));
         modbusServer.setPort(row.getInt("port"));

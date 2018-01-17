@@ -23,7 +23,11 @@ public class SmartMeterStatus implements Serializable {
 
 
     @ClusteringColumn
+<<<<<<< HEAD
     private String meterId;
+=======
+    private Long meterId;
+>>>>>>> ef6010d36ff0742e1e637c9f0e766729649b10f4
 
 
     private ZonedDateTime lastUpdate;
@@ -56,16 +60,28 @@ public class SmartMeterStatus implements Serializable {
     }
 
 
+<<<<<<< HEAD
     public SmartMeterStatus meterId(String meterId) {
+=======
+    public SmartMeterStatus meterId(Long meterId) {
+>>>>>>> ef6010d36ff0742e1e637c9f0e766729649b10f4
         this.meterId = meterId;
         return this;
     }
 
+<<<<<<< HEAD
     public String getMeterId() {
 		return meterId;
 	}
 
 	public void setMeterId(String meterId) {
+=======
+    public Long getMeterId() {
+		return meterId;
+	}
+
+	public void setMeterId(Long meterId) {
+>>>>>>> ef6010d36ff0742e1e637c9f0e766729649b10f4
 		this.meterId = meterId;
 	}
 

@@ -1,9 +1,6 @@
 package com.distribution.data.domain;
 
-import com.datastax.driver.mapping.annotations.ClusteringColumn;
-import com.datastax.driver.mapping.annotations.PartitionKey;
-import com.datastax.driver.mapping.annotations.Table;
-import com.datastax.driver.mapping.annotations.Transient;
+import com.datastax.driver.mapping.annotations.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.validation.constraints.Max;
@@ -11,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * A ModbusSlave.
@@ -24,57 +20,90 @@ public class ModbusServer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PartitionKey
-    private UUID id;
+    private String id;
 
     @ClusteringColumn
-    private UUID companyId;
-
-    private String code;
+    private String companyId;
     @Transient
     private Company company;
 
     @Transient
     private ServerStatus status;
 
+
+    /**
+     * private String comPointCode;
+     */
+    private String code;
+    /**
+     * private String hostName;
+     */
     @NotNull
     @Size(max = 64)
     private String hostname;
-
+    /**
+     * private String ip;
+     */
     @NotNull
     private String ip;
+
+    /**
+     * private Boolean enable;
+     */
     private Boolean enable;
+
+    /**
+     * private Integer hostPort;
+     */
     @NotNull
     private Integer port;
-
+/**
+ *
+ private Integer connectMode;
+ * */
     @NotNull
     @Max(value = 5)
     private Integer model;
-
+    /**
+     * private Boolean encapsulated;
+     */
     private Boolean encapsulated;
 
+    /**
+     * private Boolean keepAlive;
+     */
     private Boolean keepAlive;
-
+    /**
+     * private Integer requestTimeout;
+     */
     private Integer requestTimeout;
 
+    /**
+     * private Integer replyTimeout;
+     */
     private Integer replyTimeout;
 
-    public UUID getId() {
+
+
+
+
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     public Company getCompany() {
-		return company;
-	}
+        return company;
+    }
 
-	public void setCompany(Company company) {
-		this.company = company;
-	}
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
-	public String getHostname() {
+    public String getHostname() {
         return hostname;
     }
 
@@ -82,6 +111,7 @@ public class ModbusServer implements Serializable {
         this.hostname = hostname;
         return this;
     }
+
     public Boolean isEnable() {
         return enable;
     }
@@ -94,31 +124,33 @@ public class ModbusServer implements Serializable {
     public void setEnable(Boolean enable) {
         this.enable = enable;
     }
+
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
     public ModbusServer status(ServerStatus status) {
-    	this.status = status;
+        this.status = status;
         return this;
     }
+
     public ServerStatus getStatus() {
-		return status;
-	}
+        return status;
+    }
 
-	public void setStatus(ServerStatus status) {
-		this.status = status;
-	}
+    public void setStatus(ServerStatus status) {
+        this.status = status;
+    }
 
-	public UUID getCompanyId() {
-		return companyId;
-	}
+    public String getCompanyId() {
+        return companyId;
+    }
 
-	public void setCompanyId(UUID companyId) {
-		this.companyId = companyId;
-	}
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
-	public ModbusServer companyName(UUID companyId) {
+    public ModbusServer companyName(String companyId) {
         this.companyId = companyId;
         return this;
     }
@@ -223,7 +255,7 @@ public class ModbusServer implements Serializable {
             return false;
         }
         ModbusServer modbusServer = (ModbusServer) o;
-        if(modbusServer.id == null || id == null) {
+        if (modbusServer.id == null || id == null) {
             return false;
         }
         return Objects.equals(id, modbusServer.id);
@@ -250,9 +282,9 @@ public class ModbusServer implements Serializable {
             '}';
     }
 
-    public ModbusServer code(String code){
-       this.code = code;
-       return this;
+    public ModbusServer code(String code) {
+        this.code = code;
+        return this;
     }
 
     public String getCode() {

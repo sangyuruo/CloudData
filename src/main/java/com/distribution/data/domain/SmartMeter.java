@@ -27,6 +27,7 @@ public class SmartMeter implements Serializable {
     @PartitionKey
       private String id;
 
+
     @ClusteringColumn(0)
     private String serverId;
 
