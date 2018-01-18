@@ -6,6 +6,7 @@ import com.distribution.data.service.client.CpiServiceClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ComPointService {
     private CpiServiceClient cpiServiceClient;
@@ -44,9 +45,9 @@ public class ComPointService {
         return serverList;
     }
 
-    public Server findOneServer(String id, String companyId) {
+    public Server findOneServer( UUID id,  UUID companyId) {
 
-        CompointDTO c= cpiServiceClient.getCompoint(id, companyId);
+        CompointDTO c= cpiServiceClient.getCompoint(id.toString(), companyId.toString());
 
         Server server=new Server();
         server.setCode(c.getComPointCode());
@@ -62,9 +63,9 @@ public class ComPointService {
         return server;
     }
 
-    public List<Server> findAllByCompanyId(String companyId){
+    public List<Server> findAllByCompanyId(UUID companyId){
 
-        List<CompointDTO> cplist = cpiServiceClient.getAllByCompanyCode(companyId);
+        List<CompointDTO> cplist = cpiServiceClient.getAllByCompanyCode(companyId.toString());
         List<Server> serverList =new ArrayList<>();
         for(CompointDTO cp : cplist){
             Server server=new Server();
@@ -87,5 +88,23 @@ public class ComPointService {
 
         }
         return serverList;
+    }
+
+    public Server findOneById(UUID uuid){
+
+        CompointDTO c= cpiServiceClient.findOneById(uuid.toString());
+
+        Server server=new Server();
+        server.setCode(c.getComPointCode());
+        server.setIp(c.getIp());
+        server.setHostname(c.getHostName());
+        server.setEnable(c.isEnable());
+        server.setEncapsulated(c.isEncapsulated());
+        server.setKeepAlive(c.isKeepAlive());
+        server.setModel(c.getConnectMode());
+        server.setPort(c.getHostPort());
+        server.setReplyTimeout(c.getReplyTimeout());
+        server.setRequestTimeout(c.getRequestTimeout());
+        return server;
     }
 }

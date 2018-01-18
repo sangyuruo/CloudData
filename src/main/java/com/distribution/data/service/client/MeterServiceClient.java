@@ -1,8 +1,6 @@
 package com.distribution.data.service.client;
 
 import com.distribution.data.client.AuthorizedFeignClient;
-import io.swagger.annotations.ApiParam;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +15,6 @@ public interface MeterServiceClient {
 
     @ResponseBody
     //List<MeterInfoDTO>findMetersByServerId();
-    MeterInfoDTO findOneMeter(String meterCode, String comPointCode, Integer registerCode);
+    MeterInfoDTO findOneMeter(String meterCode, UUID comPointCode, Integer registerCode);
     List<MeterInfoDTO> getAllMeterInfosByComPointCode(String comPointCode) ;
 }

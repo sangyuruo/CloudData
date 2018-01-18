@@ -47,7 +47,7 @@ public class MeterInfoService {
         return meterList;
     }
 
-    public Meter findOneMeter(String meterCode, String comPointCode, Integer registerCode){
+    public Meter findOneMeter(String meterCode, UUID comPointCode, Integer registerCode){
         MeterInfoDTO m =meterServiceClient.findOneMeter(meterCode,comPointCode,registerCode);
         Meter meter=new Meter();
         meter.setId(m.getMeterCode());

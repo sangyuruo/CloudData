@@ -1,5 +1,4 @@
 package com.distribution.data.collector.data;
-import com.distribution.data.collector.cassadra.dao.MeterService;
 import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.event.ModbusReloadEvent;
@@ -51,8 +50,6 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     @Autowired
     private MeterInfoService meterDao;
 
-    @Autowired
-    private ComPointService comPointService;
 
     private ApplicationEventPublisher eventPublisher;
 
@@ -369,11 +366,4 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         this.eventPublisher = applicationEventPublisher;
     }
 
-    public ComPointService getComPointService() {
-        return comPointService;
-    }
-
-    public void setComPointService(ComPointService comPointService) {
-        this.comPointService = comPointService;
-    }
 }

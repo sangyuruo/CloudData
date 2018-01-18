@@ -1,33 +1,22 @@
 package com.distribution.data.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.cmd.MeterExecuter;
-import com.distribution.data.collector.event.ModbusReloadEvent;
-import com.distribution.data.domain.ModbusServer;
 import com.distribution.data.domain.SmartMeter;
-import com.distribution.data.domain.SmartMeterStatus;
-import com.distribution.data.repository.ModbusServerRepository;
-import com.distribution.data.repository.SmartMeterRepository;
 import com.distribution.data.repository.SmartMeterStatusRepository;
-import com.distribution.data.service.dto.SmartMeterDTO;
-import com.distribution.data.service.mapper.SmartMeterMapper;
-import com.distribution.data.security.SecurityUtils;
+import com.distribution.data.service.ComPointService;
+import com.distribution.data.service.MeterInfoService;
 import com.distribution.data.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.validation.Valid;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -42,15 +31,13 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
     private final Logger log = LoggerFactory.getLogger(SmartMeterResource.class);
     private ApplicationEventPublisher eventPublisher;
     @Inject
-    private SmartMeterRepository smartMeterRepository;
+    private MeterInfoService smartMeterRepository;
     @Inject
     private MeterExecuter meterExecuter;
     @Inject
     @Named("modbusServerRepository")
-    private ModbusServerRepository modbusServerRepository;
+    private ComPointService modbusServerRepository;
 
-    @Inject
-    private SmartMeterMapper smartMeterMapper;
     @Inject
     private SmartMeterStatusRepository smartMeterStatusRepository;
 
@@ -64,9 +51,11 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
     @Timed
     public ResponseEntity<Void> switchStatus(@PathVariable String id, @PathVariable String isActivated) {
         log.debug("REST request to Switch SmartMeter status : {}, {}", id, isActivated);
-        SmartMeter meter = smartMeterRepository.findOneById(UUID.fromString(id)).get(); //smartMeterRepository.findOne(UUID.fromString(id), UUID.fromString(serverId));
+        SmartMeter meter = smartMeterRepository.findOneById(UUID.fromString(id)).get();
+        //smartMeterRepository.findOne(UUID.fromString(id), UUID.fromString(serverId));
 
-        ModbusServer server = modbusServerRepository.findOneById(meter.getServerId()).get();
+        Server server = modbusServerRepository.findOneById( meter.getServerId());
+
         String cmd = Boolean.parseBoolean(isActivated) ? meter.getDataTypes().get("on") : meter.getDataTypes().get("off");
 
         String st = meter.getDataTypes().get("rst");
@@ -119,7 +108,7 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
         }else{
         	cmd = closeCmd[childIndex-1];
         }
-        ModbusServer server = modbusServerRepository.findOneById(meter.getServerId()).get();
+        Server server = modbusServerRepository.findOneById(meter.getServerId());
         String st = meter.getDataTypes().get("rst");
         if(cmd != null) {
         	try{

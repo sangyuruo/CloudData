@@ -77,7 +77,7 @@ public class ServerStatusRepository {
         return mapper.get(id, serverId);
     }
 
-    public Optional<ServerStatus> findOneByName(String serverId, LocalDateTime start, LocalDateTime end) {
+    public Optional<ServerStatus> findOneByName(UUID serverId, LocalDateTime start, LocalDateTime end) {
     	BoundStatement stmt = findOneByServerIdStmt.bind();
 //        stmt.setUUID("serverId", serverId);
         stmt.setString("serverId", serverId);

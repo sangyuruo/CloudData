@@ -1,13 +1,11 @@
 package com.distribution.data.service.client;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * 设备信息表
@@ -53,7 +51,7 @@ public class MeterInfoDTO implements Serializable {
     /**
      * 串口编码
      */
-    private String comPointCode;
+    private UUID comPointCode;
 
     /**
      * 设备类型代码
@@ -242,14 +240,14 @@ public class MeterInfoDTO implements Serializable {
         this.meterType = meterType;
     }
 
-    public String getComPointCode() {
+    public UUID getComPointCode() {
         return comPointCode;
     }
-    public MeterInfoDTO comPointCode(String comPointCode) {
+    public MeterInfoDTO comPointCode(UUID comPointCode) {
         this.comPointCode = comPointCode;
         return this;
     }
-    public void setComPointCode(String comPointCode) {
+    public void setComPointCode(UUID comPointCode) {
         this.comPointCode = comPointCode;
     }
 
