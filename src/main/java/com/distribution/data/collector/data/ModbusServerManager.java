@@ -155,7 +155,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
             if (!sms.isPresent()) {
                 sms = Optional.ofNullable(new SmartMeterStatus());
                 sms.get().initialize();
-                sms.get().setMeterId(ms.getId());
+                sms.get().setMeterId( UUID.fromString(ms.getId()) );
             }
             request.setIpParams(current.getIpParameters());
             sms.get().setLastState(-1);
