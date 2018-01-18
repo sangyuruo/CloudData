@@ -24,11 +24,6 @@ public class SmartMeterDataRepository {
 
     @Inject
     private Session session;
-    @Inject
-    private ModbusServerRepository modbusServerRepository;
-
-    @Inject
-    private SmartMeterRepository smartMeterRepository;
 
     private Mapper<SmartMeterData> mapper;
 

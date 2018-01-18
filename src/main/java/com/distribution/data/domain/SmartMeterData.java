@@ -22,10 +22,10 @@ public class SmartMeterData implements Serializable {
     private UUID id;
 
     @PartitionKey
-    private Long meterId;
+    private UUID meterId;
     @ClusteringColumn(1)
     private UUID companyId;
-    private String serverId;
+    private UUID serverId;
     private String hostname;
     private String serverCode;
     private String ip;
@@ -48,16 +48,16 @@ public class SmartMeterData implements Serializable {
         this.id = id;
     }
 
-    public SmartMeterData meterId(Long meterId) {
+    public SmartMeterData meterId(UUID meterId) {
         this.meterId = meterId;
         return this;
     }
 
-    public Long getMeterId() {
+    public UUID getMeterId() {
 		return meterId;
 	}
 
-	public void setMeterId(Long meterId) {
+	public void setMeterId(UUID meterId) {
 		this.meterId = meterId;
 	}
     public Map<String, Float> getData() {
@@ -165,16 +165,16 @@ public class SmartMeterData implements Serializable {
             '}';
     }
 
-    public String getServerId() {
+    public UUID getServerId() {
         return serverId;
     }
 
-    public SmartMeterData serverId(String serverId){
+    public SmartMeterData serverId(UUID serverId){
         this.serverId = serverId;
         return this;
     }
 
-    public void setServerId(String serverId) {
+    public void setServerId(UUID serverId) {
         this.serverId = serverId;
     }
 
