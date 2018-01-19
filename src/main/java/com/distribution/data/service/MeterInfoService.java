@@ -37,7 +37,7 @@ public class MeterInfoService {
            /* meter.setServer();
             meter.setStatus();*/
             meter.setCode(m1.getRegisterCode());
-            meter.setLongcode(m1.getLongcode());
+            meter.setLongcode(m1.getLongCode());
             meter.setFunc(3);
             meter.setAllowDuplicate(m1.getAllowDuplicate());
             meter.setName(m1.getMeterName());
@@ -71,7 +71,7 @@ public class MeterInfoService {
            /* meter.setServer();
             meter.setStatus();*/
         meter.setCode(m.getRegisterCode());
-        meter.setLongcode(m.getLongcode());
+        meter.setLongcode(m.getLongCode());
         meter.setFunc(3);
         meter.setAllowDuplicate(m.getAllowDuplicate());
         meter.setName(m.getMeterName());
@@ -104,7 +104,7 @@ public class MeterInfoService {
            /* meter.setServer();
             meter.setStatus();*/
         meter.setCode(m.getRegisterCode());
-        meter.setLongcode(m.getLongcode());
+        meter.setLongcode(m.getLongCode());
         meter.setFunc(3);
         meter.setAllowDuplicate(m.getAllowDuplicate());
         meter.setName(m.getMeterName());
@@ -136,7 +136,7 @@ public class MeterInfoService {
             smartMeter.setServerId(UUID.fromString(m1.getComPointCode()));
             smartMeter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
             smartMeter.setCode(m1.getRegisterCode());
-            smartMeter.setLongcode(m1.getLongcode());
+            smartMeter.setLongcode(m1.getLongCode());
             smartMeter.setFunc(3);
             smartMeter.setAllowDuplicate(m1.getAllowDuplicate());
             smartMeter.setName(m1.getMeterName());
@@ -170,7 +170,7 @@ public class MeterInfoService {
             smartMeter.setServerId(UUID.fromString(m1.getComPointCode()));
             smartMeter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
             smartMeter.setCode(m1.getRegisterCode());
-            smartMeter.setLongcode(m1.getLongcode());
+            smartMeter.setLongcode(m1.getLongCode());
             smartMeter.setFunc(3);
             smartMeter.setAllowDuplicate(m1.getAllowDuplicate());
             smartMeter.setName(m1.getMeterName());
