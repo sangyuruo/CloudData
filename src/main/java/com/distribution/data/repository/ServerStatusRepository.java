@@ -55,7 +55,7 @@ public class ServerStatusRepository {
 //        serverStatus.setId(row.getUUID("id"));
         serverStatus.setId(row.getUUID("id"));
 //        serverStatus.serverId(row.getUUID("serverId"));
-        serverStatus.serverId(row.getString("serverId"));
+        serverStatus.serverId(UUID.fromString(row.getString("serverId")));
 
         Date lu = row.getTimestamp("lastUpdate");
         if(lu != null) {
@@ -77,10 +77,10 @@ public class ServerStatusRepository {
         return mapper.get(id, serverId);
     }
 
-    public Optional<ServerStatus> findOneByName(String serverId, LocalDateTime start, LocalDateTime end) {
+    public Optional<ServerStatus> findOneByName(UUID serverId, LocalDateTime start, LocalDateTime end) {
     	BoundStatement stmt = findOneByServerIdStmt.bind();
 //        stmt.setUUID("serverId", serverId);
-        stmt.setString("serverId", serverId);
+        stmt.setString("serverId", serverId.toString());
         UUID st = UUIDs.startOf(DateUtils.getTodayStart(start).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         UUID ed = UUIDs.endOf(DateUtils.getTodayEnd(end).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         stmt.setUUID("st", st);

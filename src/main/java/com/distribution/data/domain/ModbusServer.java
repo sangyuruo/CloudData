@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A ModbusSlave.
@@ -20,10 +21,10 @@ public class ModbusServer implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @PartitionKey
-    private String id;
+    private UUID id;
 
     @ClusteringColumn
-    private String companyId;
+    private UUID companyId;
     @Transient
     private Company company;
 
@@ -87,11 +88,11 @@ public class ModbusServer implements Serializable {
 
 
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -142,15 +143,15 @@ public class ModbusServer implements Serializable {
         this.status = status;
     }
 
-    public String getCompanyId() {
+    public UUID getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(UUID companyId) {
         this.companyId = companyId;
     }
 
-    public ModbusServer companyName(String companyId) {
+    public ModbusServer companyName(UUID companyId) {
         this.companyId = companyId;
         return this;
     }

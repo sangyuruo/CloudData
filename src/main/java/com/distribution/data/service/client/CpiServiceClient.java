@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.UUID;
 
 @AuthorizedFeignClient(name = "EmCloudCpi")
 public interface CpiServiceClient {
@@ -15,7 +16,8 @@ public interface CpiServiceClient {
     @ResponseBody
 
     List<CompointDTO> getAllCompoints();
-    CompointDTO getCompoint(String id, String companyId);
-    List<CompointDTO> getAllByCompanyCode(String companyId);
+    CompointDTO getCompoint(String compointCode , String  companyCode);
+    List<CompointDTO> getAllByCompanyCode(String companyCode);
+    CompointDTO findOneById(String  compointCode);
 }
 

@@ -12,6 +12,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * not an ignored comment
@@ -20,16 +21,16 @@ import java.util.Objects;
 @ApiModel(description = "not an ignored comment")
 @Table(name = "smartMeter")
 @Document(indexName = "smartmeter")
-public class SmartMeter implements Serializable {
+public class SmartMeter  implements Serializable  {
 
     private static final long serialVersionUID = 1L;
     @PartitionKey
-      private String id;
+      private UUID id;
 
     @ClusteringColumn(0)
-    private String serverId;
+    private UUID serverId;
 
-    private String companyId;
+    private UUID companyId;
 
     @Transient
     private ModbusServer server;
@@ -75,24 +76,24 @@ public class SmartMeter implements Serializable {
 		this.server = server;
 	}
 
-	public String getId() {
+	public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public String getServerId() {
+    public UUID getServerId() {
 		return serverId;
 	}
 
-    public SmartMeter serverId(String serverId) {
+    public SmartMeter serverId(UUID serverId) {
     	this.serverId = serverId;
         return this;
     }
 
-	public void setServerId(String serverId) {
+	public void setServerId(UUID serverId) {
 		this.serverId = serverId;
 	}
 
@@ -291,16 +292,16 @@ public class SmartMeter implements Serializable {
             '}';
     }
 
-    public SmartMeter companyId(String companyId){
+    public SmartMeter companyId(UUID companyId){
         this.companyId = companyId;
         return this;
     }
 
-    public String getCompanyId() {
+    public UUID getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(String companyId) {
+    public void setCompanyId(UUID companyId) {
         this.companyId = companyId;
     }
 

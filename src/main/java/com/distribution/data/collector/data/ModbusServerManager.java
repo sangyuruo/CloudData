@@ -50,8 +50,6 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     @Autowired
     private MeterInfoService meterDao;
 
-    @Autowired
-    private ComPointService comPointService;
 
     private ApplicationEventPublisher eventPublisher;
 
@@ -150,11 +148,11 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                 request.setRequest(req);
             }
             LocalDateTime st = LocalDateTime.now();
-            Optional<SmartMeterStatus> sms = smartMeterStatusRepository.findOneByName(ms.getId(), st, st);
+            Optional<SmartMeterStatus> sms = smartMeterStatusRepository.findOneByName(ms.getId().toString(), st, st);
             if (!sms.isPresent()) {
                 sms = Optional.ofNullable(new SmartMeterStatus());
                 sms.get().initialize();
-                sms.get().setMeterId( UUID.fromString(ms.getId()) );
+                sms.get().setMeterId( UUID.fromString(ms.getId().toString()) );
             }
             request.setIpParams(current.getIpParameters());
             sms.get().setLastState(-1);
@@ -203,7 +201,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
 
             if (temp != null) {
                 if (event.getOperator() != ModbusReloadEvent.OPERATOR_DELETE) {
-                    Meter me = meterDao.findOneMeter(sm.getId(), sm.getServerId(), sm.getCode());
+                    Meter me = meterDao.findOneMeter(sm.getId().toString(), sm.getServerId().toString(), sm.getCode());
                     List<Meter> list = (List<Meter>) temp.getSmartMeters();
                     initSmartMeter(temp, temp.getTcpRequests(), me);
                     list.add(me);
@@ -368,11 +366,4 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         this.eventPublisher = applicationEventPublisher;
     }
 
-    public ComPointService getComPointService() {
-        return comPointService;
-    }
-
-    public void setComPointService(ComPointService comPointService) {
-        this.comPointService = comPointService;
-    }
 }

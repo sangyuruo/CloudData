@@ -2,7 +2,6 @@ package com.distribution.data.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.distribution.data.collector.cassadra.dao.MeterDataService;
-import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.cmd.MeterExecuter;
 import com.distribution.data.collector.data.ModbusServerManager;
@@ -31,8 +30,8 @@ import java.util.UUID;
 public class RsDataResource {
 	private static Logger logger = LoggerFactory.getLogger(RsDataResource.class);
 
-    @Inject
-    private CompanyRepository companyRepository;
+    /*@Inject
+    private CompanyRepository companyRepository;*/
 
     @Inject
     @Named("smartMeterRepository")
@@ -109,9 +108,8 @@ public class RsDataResource {
     @Timed
     public FindSmartMeterResponse findSmartMeter(@PathVariable String id) {
         FindSmartMeterResponse response = new FindSmartMeterResponse();
-        List<SmartMeter> list;
+        List<SmartMeter> list ;
       /*  List<Meter> list1 = null;*/
-        SmartMeter smartMeter = new SmartMeter();
         if(!"NONE".equalsIgnoreCase(id)) {
             list = smartMeteRepository.findAllForService();
         }else{
@@ -121,12 +119,15 @@ public class RsDataResource {
         response.getSmartMeter().addAll(list);
         return response;
     }
+/*
 
-    /**
+    */
+/**
      * 按公司ID查询公司数据。如果为NONE，则查询所有公司。
      * @param id
      * @return
-     */
+     *//*
+
     @GetMapping("/rscom/{id}")
     @Timed
     public FindCompanyResponse findCompany(@PathVariable String id) {
@@ -147,6 +148,7 @@ public class RsDataResource {
         }
         return response;
     }
+*/
 
     /**
      * 查询设备状态。
@@ -235,3 +237,4 @@ public class RsDataResource {
 		return response;
 	}
 }
+

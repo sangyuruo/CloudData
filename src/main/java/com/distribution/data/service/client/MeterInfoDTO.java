@@ -130,6 +130,7 @@ public class MeterInfoDTO implements Serializable {
      */
     private Integer calculates;
 
+    private Long longcode;
     /**
      * 是否有效
      */
@@ -279,7 +280,7 @@ public class MeterInfoDTO implements Serializable {
         this.latitude = latitude;
     }
 
-   /* public Long getLongcode() {
+    public Long getLongcode() {
         return longcode;
     }
     public MeterInfoDTO longcode(Long longcode) {
@@ -289,7 +290,7 @@ public class MeterInfoDTO implements Serializable {
     public void setLongcode(Long longcode) {
         this.longcode = longcode;
     }
-*/
+
     public Boolean getBigEndian() {
         return bigEndian;
     }

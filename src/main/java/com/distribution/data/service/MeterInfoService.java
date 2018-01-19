@@ -20,9 +20,9 @@ public class MeterInfoService {
         for (MeterInfoDTO m1: meterInfoDTOList){
 
                Meter meter=new Meter();
-            meter.setId(m1.getMeterCode());
-            meter.setServerId(m1.getComPointCode());
-            meter.setCompanyId(m1.getCompanyCode());
+            meter.setId(UUID.fromString(m1.getMeterCode()));
+            meter.setServerId(UUID.fromString(m1.getComPointCode()));
+            meter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
            /* meter.setServer();
             meter.setStatus();*/
             meter.setCode(m1.getRegisterCode());
@@ -53,9 +53,9 @@ public class MeterInfoService {
     public Meter findOneMeter(String meterCode, String comPointCode, Integer registerCode){
         MeterInfoDTO m =meterServiceClient.getOneMeterInfo(meterCode,comPointCode,registerCode);
         Meter meter=new Meter();
-        meter.setId(m.getMeterCode());
-        meter.setServerId(m.getComPointCode());
-        meter.setCompanyId(m.getCompanyCode());
+        meter.setId(UUID.fromString(m.getMeterCode()));
+        meter.setServerId(UUID.fromString(m.getComPointCode()));
+        meter.setCompanyId(UUID.fromString(m.getCompanyCode()));
            /* meter.setServer();
             meter.setStatus();*/
         meter.setCode(m.getRegisterCode());
@@ -83,9 +83,9 @@ public class MeterInfoService {
     public Meter findOneById(String meterCode) {
         MeterInfoDTO m = meterServiceClient.getMeterInfoByMeterCode(meterCode);
         Meter meter=new Meter();
-        meter.setId(m.getMeterCode());
-        meter.setServerId(m.getComPointCode());
-        meter.setCompanyId(m.getCompanyCode());
+        meter.setId(UUID.fromString(m.getMeterCode()));
+        meter.setServerId(UUID.fromString(m.getComPointCode()));
+        meter.setCompanyId(UUID.fromString(m.getCompanyCode()));
            /* meter.setServer();
             meter.setStatus();*/
         meter.setCode(m.getRegisterCode());
@@ -115,9 +115,9 @@ public class MeterInfoService {
         List<SmartMeter> meterList =new ArrayList<>();
         SmartMeter smartMeter = new SmartMeter();
         for (MeterInfoDTO m1: meterInfoDTOList){
-            smartMeter.setId(m1.getMeterCode());
-            smartMeter.setServerId(m1.getComPointCode());
-            smartMeter.setCompanyId(m1.getCompanyCode());
+            smartMeter.setId(UUID.fromString(m1.getMeterCode()));
+            smartMeter.setServerId(UUID.fromString(m1.getComPointCode()));
+            smartMeter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
             smartMeter.setCode(m1.getRegisterCode());
             smartMeter.setLongcode(m1.getLongcode());
             smartMeter.setFunc(3);
@@ -148,9 +148,9 @@ public class MeterInfoService {
         List<SmartMeter> meterList =new ArrayList<>();
         SmartMeter smartMeter = new SmartMeter();
         for (MeterInfoDTO m1: meterInfoDTOList){
-            smartMeter.setId(m1.getMeterCode());
-            smartMeter.setServerId(m1.getComPointCode());
-            smartMeter.setCompanyId(m1.getCompanyCode());
+            smartMeter.setId(UUID.fromString(m1.getMeterCode()));
+            smartMeter.setServerId(UUID.fromString(m1.getComPointCode()));
+            smartMeter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
             smartMeter.setCode(m1.getRegisterCode());
             smartMeter.setLongcode(m1.getLongcode());
             smartMeter.setFunc(3);
