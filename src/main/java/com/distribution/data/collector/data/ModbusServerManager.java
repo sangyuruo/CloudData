@@ -61,19 +61,22 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
 
     @PostConstruct
     public void init() {
+        //TODO
+    }
 
+    public void startModbusServer(){
         StopWatch watch = new StopWatch();
         watch.start();
         mServer = serverDao.findAllServer();
-       synchronized (mServer) {
+        synchronized (mServer) {
             for (Server current : mServer) {
                 initModbusServer(current);
             }
         }
         watch.stop();
         logger.debug("Initialized the modbus config in {} ms", watch.getTotalTimeMillis());
-
     }
+
 
     protected void initModbusServer(Server current) {
         current.getIpParameters();
