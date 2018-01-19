@@ -35,7 +35,6 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
     @Inject
     private MeterExecuter meterExecuter;
     @Inject
-    @Named("modbusServerRepository")
     private ComPointService modbusServerRepository;
 
     @Inject

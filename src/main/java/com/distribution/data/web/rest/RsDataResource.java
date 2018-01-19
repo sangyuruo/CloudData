@@ -34,7 +34,6 @@ public class RsDataResource {
     private CompanyRepository companyRepository;*/
 
     @Inject
-    @Named("smartMeterRepository")
     private MeterInfoService smartMeteRepository;
 
 	@Inject
