@@ -60,6 +60,8 @@ public class ComPointService {
         server.setPort(c.getHostPort());
         server.setReplyTimeout(c.getReplyTimeout());
         server.setRequestTimeout(c.getRequestTimeout());
+        server.setId(c.getId());
+        server.setCompanyId(c.getCompanyCode());
         return server;
     }
 

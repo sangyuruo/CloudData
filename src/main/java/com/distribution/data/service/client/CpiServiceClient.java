@@ -14,10 +14,26 @@ public interface CpiServiceClient {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-
     List<CompointDTO> getAllCompoints();
+
+
+    @GetMapping(value = "/api/compoints/{compointCode}" ,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     CompointDTO getCompoint(String compointCode , String  companyCode);
-    List<CompointDTO> getAllByCompanyCode(String companyCode);
+
+
+    @GetMapping(value = "/api/compoints/{compointCode}" ,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
     CompointDTO findOneById(String  compointCode);
+
+    @GetMapping(value = "/api/compoints/bycompanycode" ,
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    List<CompointDTO> getAllByCompanyCode(String companyCode);
 }
 
