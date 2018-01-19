@@ -19,10 +19,9 @@ public class CompointDTO implements Serializable {
 
     private ServerStatus status;
 
-    private UUID companyId;
     private Company company;
 
-    private UUID id;
+    private Long id;
 
     /**
      * 设备编码 外键
@@ -52,7 +51,7 @@ public class CompointDTO implements Serializable {
     /**
      * 公司编码
      */
-    private UUID companyCode;
+    private String companyCode;
 
     /**
      * ip地址
@@ -119,13 +118,6 @@ public class CompointDTO implements Serializable {
     private Instant updateTime;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 
     public String getComPointCode() {
         return comPointCode;
@@ -192,18 +184,6 @@ public class CompointDTO implements Serializable {
         this.organizationCode = organizationCode;
     }
 
-    public UUID getCompanyCode() {
-        return companyCode;
-    }
-
-    public CompointDTO companyCode(UUID companyCode) {
-        this.companyCode = companyCode;
-        return this;
-    }
-
-    public void setCompanyCode(UUID companyCode) {
-        this.companyCode = companyCode;
-    }
 
     public String getIp() {
         return ip;
@@ -421,5 +401,21 @@ public class CompointDTO implements Serializable {
 
     public void setStatus(ServerStatus status) {
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 }

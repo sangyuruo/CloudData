@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -31,6 +32,17 @@ public class TestResource {
         logger.info("start get data from mi");
         List<Server> serverList = comPointService.findAllServer();
         System.out.println(serverList.toString());
+        return serverList;
+    }
+
+
+    @GetMapping("/test/EmCloudCpi/compoint/{compointcode}")
+    @Timed
+    public List<Server> testcpiService(String id) {
+        logger.info("start get data from mi");
+        List<Server> serverList = comPointService.findAllByCompanyId(UUID.fromString(id));
+        System.out.println(serverList.toString());
+        System.out.println("阿紫================阿紫===================阿紫");
         return serverList;
     }
 
