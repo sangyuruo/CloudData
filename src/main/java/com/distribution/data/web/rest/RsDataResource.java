@@ -116,7 +116,11 @@ public class RsDataResource {
             list = smartMeteRepository.findByServerIdForService(id);
         }
         response.getSmartMeter().clear();
+<<<<<<< HEAD
    //     response.getSmartMeter().addAll(list);
+=======
+//        response.getSmartMeter().addAll(list);
+>>>>>>> 0a722c49eaf482466060a4b155724cb3cf97d1cd
         return response;
     }
 /*

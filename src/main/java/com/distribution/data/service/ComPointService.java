@@ -25,6 +25,7 @@ public class ComPointService {
     }
 
 
+<<<<<<< HEAD
 
     /**
      *  Get all the compoints.
@@ -34,11 +35,14 @@ public class ComPointService {
 
     @Inject
     public  List<Server> findAllServer() {
+=======
+    public List<Server> findAllServer() {
+>>>>>>> 0a722c49eaf482466060a4b155724cb3cf97d1cd
         List<CompointDTO> compointDTOList = cpiServiceClient.getAllCompoints();
-        List<Server> serverList =new ArrayList<>();
+        List<Server> serverList = new ArrayList<>();
 
-        for(CompointDTO cp : compointDTOList){
-            Server server=new Server();
+        for (CompointDTO cp : compointDTOList) {
+            Server server = new Server();
             server.setCode(cp.getComPointCode());
             server.setIp(cp.getIp());
             server.setHostname(cp.getHostName());
@@ -60,6 +64,7 @@ public class ComPointService {
         return serverList;
     }
 
+<<<<<<< HEAD
     /**
      *  Get all the companies.
      *
@@ -70,10 +75,13 @@ public class ComPointService {
 
     @Inject
     public Server findOneServer( UUID id,  UUID companyId) {
+=======
+    public Server findOneServer(UUID id, UUID companyId) {
+>>>>>>> 0a722c49eaf482466060a4b155724cb3cf97d1cd
 
-        CompointDTO c= cpiServiceClient.getCompoint(id.toString(), companyId.toString());
+        CompointDTO c = cpiServiceClient.getCompoint(id.toString(), companyId.toString());
 
-        Server server=new Server();
+        Server server = new Server();
         server.setCode(c.getComPointCode());
         server.setIp(c.getIp());
         server.setHostname(c.getHostName());
@@ -89,14 +97,18 @@ public class ComPointService {
         return server;
     }
 
+<<<<<<< HEAD
 
     @Inject
     public List<Server> findAllByCompanyId(UUID companyId){
+=======
+    public List<Server> findAllByCompanyId(UUID companyId) {
+>>>>>>> 0a722c49eaf482466060a4b155724cb3cf97d1cd
 
         List<CompointDTO> cplist = cpiServiceClient.getAllByCompanyCode(companyId.toString());
-        List<Server> serverList =new ArrayList<>();
-        for(CompointDTO cp : cplist){
-            Server server=new Server();
+        List<Server> serverList = new ArrayList<>();
+        for (CompointDTO cp : cplist) {
+            Server server = new Server();
             server.setCode(cp.getComPointCode());
             server.setIp(cp.getIp());
             server.setHostname(cp.getHostName());
@@ -118,12 +130,16 @@ public class ComPointService {
         return serverList;
     }
 
+<<<<<<< HEAD
     @Inject
     public Server findOneById(UUID uuid){
+=======
+    public Server findOneById(UUID uuid) {
+>>>>>>> 0a722c49eaf482466060a4b155724cb3cf97d1cd
 
-        CompointDTO c= cpiServiceClient.findOneById(uuid.toString());
+        CompointDTO c = cpiServiceClient.findOneById(uuid.toString());
 
-        Server server=new Server();
+        Server server = new Server();
         server.setCode(c.getComPointCode());
         server.setIp(c.getIp());
         server.setHostname(c.getHostName());
