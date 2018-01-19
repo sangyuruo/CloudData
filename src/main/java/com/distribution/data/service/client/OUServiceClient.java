@@ -9,7 +9,7 @@ import java.util.List;
 
 @AuthorizedFeignClient(name = "EmCloudOU")
 public interface OUServiceClient {
-    @GetMapping(value = "/api/allcompanies" , consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/api/companies" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     List<CompanyDTO> getAllCompanies() ;
