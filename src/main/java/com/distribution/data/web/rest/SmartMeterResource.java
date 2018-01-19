@@ -9,6 +9,7 @@ import com.distribution.data.domain.SmartMeterStatus;
 import com.distribution.data.repository.ModbusServerRepository;
 import com.distribution.data.repository.SmartMeterRepository;
 import com.distribution.data.repository.SmartMeterStatusRepository;
+import com.distribution.data.service.MeterInfoService;
 import com.distribution.data.service.dto.SmartMeterDTO;
 import com.distribution.data.service.mapper.SmartMeterMapper;
 import com.distribution.data.security.SecurityUtils;
@@ -42,7 +43,7 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
     private final Logger log = LoggerFactory.getLogger(SmartMeterResource.class);
     private ApplicationEventPublisher eventPublisher;
     @Inject
-    private SmartMeterRepository smartMeterRepository;
+    private MeterInfoService smartMeterRepository;
     @Inject
     private MeterExecuter meterExecuter;
     @Inject
@@ -64,11 +65,10 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
     @Timed
     public ResponseEntity<Void> switchStatus(@PathVariable String id, @PathVariable String isActivated) {
         log.debug("REST request to Switch SmartMeter status : {}, {}", id, isActivated);
-        SmartMeter meter = smartMeterRepository.findOneById(UUID.fromString(id)).get(); //smartMeterRepository.findOne(UUID.fromString(id), UUID.fromString(serverId));
-
+        SmartMeter meter = smartMeterRepository.findOneById(id);
+        //smartMeterRepository.findOne(UUID.fromString(id), UUID.fromString(serverId));
         ModbusServer server = modbusServerRepository.findOneById(meter.getServerId()).get();
         String cmd = Boolean.parseBoolean(isActivated) ? meter.getDataTypes().get("on") : meter.getDataTypes().get("off");
-
         String st = meter.getDataTypes().get("rst");
         if(cmd != null) {
         	try{
@@ -100,7 +100,7 @@ public class SmartMeterResource implements ApplicationEventPublisherAware {
     @Timed
     public ResponseEntity<Void> switchZY112Status(@PathVariable String id, @PathVariable Integer childIndex, @PathVariable String isActivated) {
         log.debug("REST request to Switch SmartMeter status : {}, {}", id, isActivated);
-        SmartMeter meter = smartMeterRepository.findOneById(UUID.fromString(id)).get(); //smartMeterRepository.findOne(UUID.fromString(id), UUID.fromString(serverId));
+        SmartMeter meter = smartMeterRepository.findOneById(id); //smartMeterRepository.findOne(UUID.fromString(id), UUID.fromString(serverId));
         String cmd = null;
 		String[] openCmd = { "050600030001B98E", "050600040001084F",
 				"050600050001598F", "050600060001A98F", "050600070001F84F",

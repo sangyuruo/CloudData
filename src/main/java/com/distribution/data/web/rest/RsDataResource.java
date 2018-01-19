@@ -2,13 +2,14 @@ package com.distribution.data.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.distribution.data.collector.cassadra.dao.MeterDataService;
+import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.cmd.MeterExecuter;
 import com.distribution.data.collector.data.ModbusServerManager;
 import com.distribution.data.collector.data.TcpModbusRequest;
 import com.distribution.data.domain.Company;
-import com.distribution.data.repository.CompanyRepository;
-import com.distribution.data.repository.SmartMeterRepository;
+import com.distribution.data.domain.SmartMeter;
+import com.distribution.data.service.MeterInfoService;
 import com.distribution.modules.ws.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class RsDataResource {
 
     @Inject
     @Named("smartMeterRepository")
-    private SmartMeterRepository smartMeteRepository;
+    private MeterInfoService smartMeteRepository;
 
 	@Inject
 	private ModbusServerManager manager;
@@ -108,15 +109,16 @@ public class RsDataResource {
     @Timed
     public FindSmartMeterResponse findSmartMeter(@PathVariable String id) {
         FindSmartMeterResponse response = new FindSmartMeterResponse();
-        List<SmartMeter> list = null;
+        List<SmartMeter> list;
+      /*  List<Meter> list1 = null;*/
+        SmartMeter smartMeter = new SmartMeter();
         if(!"NONE".equalsIgnoreCase(id)) {
             list = smartMeteRepository.findAllForService();
         }else{
-            list = smartMeteRepository.findByServerIdForService(UUID.fromString(id));
+            list = smartMeteRepository.findByServerIdForService(id);
         }
         response.getSmartMeter().clear();
         response.getSmartMeter().addAll(list);
-
         return response;
     }
 

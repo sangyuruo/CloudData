@@ -73,14 +73,7 @@ public class MeterInfoDTO implements Serializable {
      * 纬度
      */
     private Double latitude;
-    /**
-     * 纬度
-     */
-    private Long longcode;
 
-    /**
-     * 纬度
-     */
     /*private int func=3;*/
 
     /**
@@ -286,7 +279,7 @@ public class MeterInfoDTO implements Serializable {
         this.latitude = latitude;
     }
 
-    public Long getLongcode() {
+   /* public Long getLongcode() {
         return longcode;
     }
     public MeterInfoDTO longcode(Long longcode) {
@@ -296,7 +289,7 @@ public class MeterInfoDTO implements Serializable {
     public void setLongcode(Long longcode) {
         this.longcode = longcode;
     }
-
+*/
     public Boolean getBigEndian() {
         return bigEndian;
     }

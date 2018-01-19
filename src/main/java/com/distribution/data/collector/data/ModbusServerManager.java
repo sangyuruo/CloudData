@@ -1,5 +1,4 @@
 package com.distribution.data.collector.data;
-import com.distribution.data.collector.cassadra.dao.MeterService;
 import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.event.ModbusReloadEvent;
@@ -209,12 +208,12 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                     initSmartMeter(temp, temp.getTcpRequests(), me);
                     list.add(me);
                 }
-            } /*else {
+            } else {
                 //Never
                 Server s = serverDao.findOneServer(sm.getServerId(), sm.getCompanyId());
                 initModbusServer(s);
                 mServer.add(s);
-            }*/
+            }
         }
     }
 

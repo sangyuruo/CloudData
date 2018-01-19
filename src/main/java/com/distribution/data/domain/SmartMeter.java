@@ -23,10 +23,8 @@ import java.util.Objects;
 public class SmartMeter implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
     @PartitionKey
       private String id;
-
 
     @ClusteringColumn(0)
     private String serverId;
