@@ -21,89 +21,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class TestResource {
-
-
     @Inject
-    MeterServiceClient client;
-
-    @Inject
-    OUServiceClient ouServiceClient;
-
-
-    private    ComPointService comPointService;
+    private ComPointService comPointService;
     private static Logger logger = LoggerFactory.getLogger(TestResource.class);
-    @GetMapping("/test")
+
+    @GetMapping("/test/mi")
     @Timed
-    public void testComBtwService() {
-
+    public List<Server> testComBtwService() {
         logger.info("start get data from mi");
-        Pageable pageable = new Pageable() {
-            @Override
-            public int getPageNumber() {
-                return 1;
-            }
-
-            @Override
-            public int getPageSize() {
-                return 100;
-            }
-
-            @Override
-            public int getOffset() {
-                return 0;
-            }
-
-            @Override
-            public Sort getSort() {
-                return null;
-            }
-
-            @Override
-            public Pageable next() {
-                return null;
-            }
-
-            @Override
-            public Pageable previousOrFirst() {
-                return null;
-            }
-
-            @Override
-            public Pageable first() {
-                return null;
-            }
-
-            @Override
-            public boolean hasPrevious() {
-                return false;
-            }
-        };
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        List<CompanyDTO> companies = ouServiceClient.getAllCompanies();
-//                        List<MeterInfoDTO> meterInfos = client.getAllMeterInfos(pageable);
-                        for (CompanyDTO company : companies ) {
-                            logger.info( company.getCompanyName() );
-                        }
-                        logger.info("loop meterinfo: " + companies.size());
-                    } catch (Throwable ex) {
-                        logger.error(ex.getMessage());
-                    }
-                    try {
-                        Thread.sleep(5000L);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
-
-        List<Server> serverList=comPointService.findAllServer();
+        List<Server> serverList = comPointService.findAllServer();
         System.out.println(serverList.toString());
+        return serverList;
     }
 
 }

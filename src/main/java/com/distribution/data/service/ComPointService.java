@@ -17,13 +17,12 @@ public class ComPointService {
     }
 
 
-
-    public  List<Server> findAllServer() {
+    public List<Server> findAllServer() {
         List<CompointDTO> compointDTOList = cpiServiceClient.getAllCompoints();
-        List<Server> serverList =new ArrayList<>();
+        List<Server> serverList = new ArrayList<>();
 
-        for(CompointDTO cp : compointDTOList){
-            Server server=new Server();
+        for (CompointDTO cp : compointDTOList) {
+            Server server = new Server();
             server.setCode(cp.getComPointCode());
             server.setIp(cp.getIp());
             server.setHostname(cp.getHostName());
@@ -45,11 +44,11 @@ public class ComPointService {
         return serverList;
     }
 
-    public Server findOneServer( UUID id,  UUID companyId) {
+    public Server findOneServer(UUID id, UUID companyId) {
 
-        CompointDTO c= cpiServiceClient.getCompoint(id.toString(), companyId.toString());
+        CompointDTO c = cpiServiceClient.getCompoint(id.toString(), companyId.toString());
 
-        Server server=new Server();
+        Server server = new Server();
         server.setCode(c.getComPointCode());
         server.setIp(c.getIp());
         server.setHostname(c.getHostName());
@@ -65,12 +64,12 @@ public class ComPointService {
         return server;
     }
 
-    public List<Server> findAllByCompanyId(UUID companyId){
+    public List<Server> findAllByCompanyId(UUID companyId) {
 
         List<CompointDTO> cplist = cpiServiceClient.getAllByCompanyCode(companyId.toString());
-        List<Server> serverList =new ArrayList<>();
-        for(CompointDTO cp : cplist){
-            Server server=new Server();
+        List<Server> serverList = new ArrayList<>();
+        for (CompointDTO cp : cplist) {
+            Server server = new Server();
             server.setCode(cp.getComPointCode());
             server.setIp(cp.getIp());
             server.setHostname(cp.getHostName());
@@ -92,11 +91,11 @@ public class ComPointService {
         return serverList;
     }
 
-    public Server findOneById(UUID uuid){
+    public Server findOneById(UUID uuid) {
 
-        CompointDTO c= cpiServiceClient.findOneById(uuid.toString());
+        CompointDTO c = cpiServiceClient.findOneById(uuid.toString());
 
-        Server server=new Server();
+        Server server = new Server();
         server.setCode(c.getComPointCode());
         server.setIp(c.getIp());
         server.setHostname(c.getHostName());
