@@ -2,6 +2,7 @@ package com.distribution.data.collector.data;
 import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.event.ModbusReloadEvent;
+import com.distribution.data.collector.event.TcpModbusEvent;
 import com.distribution.data.collector.server.MasterListenerConnectionHandler;
 import com.distribution.data.collector.server.PollingServerRequestHandler;
 import com.distribution.data.collector.server.TcpModbusServerListener;
@@ -19,9 +20,11 @@ import com.distribution.modbus.protocol.ip.IpParameters;
 import com.distribution.modbus.protocol.msg.ReadHoldingRegistersRequest;
 import com.distribution.modbus.protocol.msg.ReadInputRegistersRequest;
 import com.distribution.modbus.protocol.polling.ModbusPollingServer;
+import com.netflix.discovery.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.ApplicationListener;
@@ -32,14 +35,14 @@ import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.util.*;
 @Component
-public class ModbusServerManager implements ApplicationListener<ModbusReloadEvent>, ApplicationEventPublisherAware {
+public class ModbusServerManager implements ApplicationListener<ModbusReloadEvent>, ApplicationEventPublisherAware,EurekaEventListener {
     public static final int STATUS_OKEY = 1;
     public static final int STATUS_BAD = 0;
     public static final int STATUS_PENDING = -1;
     private static Logger logger = LoggerFactory.getLogger(ModbusServerManager.class);
     public static final Map<Integer, IMeterParser> meterParser = new HashMap<Integer, IMeterParser>();
     private Map<String, ModbusMaster> connections = new HashMap<String, ModbusMaster>();
-
+    boolean start = false;
     @Autowired
     private ComPointService serverDao;
 
@@ -52,6 +55,9 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     @Autowired
     private MeterInfoService meterDao;
 
+    @Autowired
+    EurekaClient client;
+
 
     private ApplicationEventPublisher eventPublisher;
 
@@ -61,10 +67,12 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
 
     @PostConstruct
     public void init() {
-        //TODO
+        start = false;
+        client.registerEventListener(this);
     }
 
     public void startModbusServer(){
+        logger.info("startModbusServer................................................................................");
         StopWatch watch = new StopWatch();
         watch.start();
         mServer = serverDao.findAllServer();
@@ -74,6 +82,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
             }
         }
         watch.stop();
+        eventPublisher.publishEvent(new ModbusServerManagerEvent(""));
         logger.debug("Initialized the modbus config in {} ms", watch.getTotalTimeMillis());
     }
 
@@ -371,4 +380,17 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
         this.eventPublisher = applicationEventPublisher;
     }
 
+    @Override
+    public void onEvent(EurekaEvent event) {
+        logger.info("on client event...............................................................");
+        if( event instanceof CacheRefreshedEvent || event instanceof StatusChangeEvent){
+            logger.info("on client event(DiscoveryEvent)...............................................................");
+//            CacheRefreshedEvent ev = (CacheRefreshedEvent) event;
+            if( !start ){
+                this.startModbusServer();
+                start = true;
+            }
+
+        }
+    }
 }
