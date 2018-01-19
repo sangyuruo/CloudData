@@ -39,14 +39,16 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
     private static Logger logger = LoggerFactory.getLogger(ModbusServerManager.class);
     public static final Map<Integer, IMeterParser> meterParser = new HashMap<Integer, IMeterParser>();
     private Map<String, ModbusMaster> connections = new HashMap<String, ModbusMaster>();
+
     @Autowired
     private ComPointService serverDao;
+
     @Autowired
     private ServerStatusRepository serverStatusRepository;
+
     @Autowired
     private SmartMeterStatusRepository smartMeterStatusRepository;
-   /* @Autowired
-    private MeterService meterDao;*/
+
     @Autowired
     private MeterInfoService meterDao;
 

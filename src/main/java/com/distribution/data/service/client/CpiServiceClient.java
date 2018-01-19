@@ -11,30 +11,30 @@ import java.util.UUID;
 
 @AuthorizedFeignClient(name = "EmCloudCpi")
 public interface CpiServiceClient {
-    @GetMapping(value = "/api/compoints" ,
+    @GetMapping(value = "/api/compoint" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    List<CompointDTO> getAllCompoints();
+    List<CompointDTO> getCompoints();
 
 
-    @GetMapping(value = "/api/compoint/{compointCode}/{companyCode}" ,
+    @GetMapping(value = "/api/compoint/{compointcode}/{companycode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    CompointDTO getCompoint(@PathVariable  String compointCode ,@PathVariable String  companyCode);
+    CompointDTO getCompoint(@PathVariable(value = "compointcode")  String compointCode ,@PathVariable(value = "companycode") String  companyCode);
 
 
-    @GetMapping(value = "/api/compoint/{compointCode}" ,
+    @GetMapping(value = "/api/compoint/{compointcode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    CompointDTO findOneById(@PathVariable String  compointCode);
+    CompointDTO findOneById(@PathVariable(value = "compointcode") String  compointCode);
 
-    @GetMapping(value = "/api/compoints/{companyCode}" ,
+    @GetMapping(value = "/api/compoints/{companycode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    List<CompointDTO> getAllByCompanyCode(@PathVariable String companyCode);
+    List<CompointDTO> getAllByCompanyCode(@PathVariable(value = "companycode") String companyCode);
 }
 

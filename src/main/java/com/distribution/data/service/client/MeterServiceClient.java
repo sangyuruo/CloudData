@@ -15,17 +15,17 @@ public interface MeterServiceClient {
     @GetMapping(value = "/api/meter-info/{metercode}/{compointcode}/{registercode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    MeterInfoDTO getOneMeterInfo(@PathVariable  String meterCode,@PathVariable  String comPointCode, @PathVariable Integer registerCode);
+    MeterInfoDTO getOneMeterInfo(@PathVariable(value = "metercode")  String meterCode,@PathVariable(value = "compointcode")  String comPointCode, @PathVariable(value = "registerCode") Integer registerCode);
 
     @GetMapping(value = "/api/meter-info/{comointcode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    List<MeterInfoDTO> getAllMeterInfosByComPointCode(@PathVariable String comPointCode) ;
+    List<MeterInfoDTO> getAllMeterInfosByComPointCode(@PathVariable(value = "comPointcode") String comPointCode) ;
 
     @GetMapping(value = "/api/meter-infos/{comointcode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    MeterInfoDTO getMeterInfoByMeterCode(@PathVariable String meterCode);
+    MeterInfoDTO getMeterInfoByMeterCode(@PathVariable(value = "comPointcode") String meterCode);
 
     @GetMapping(value = "/api/meter-infos" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
