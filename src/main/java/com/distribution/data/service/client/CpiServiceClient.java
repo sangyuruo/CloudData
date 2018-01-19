@@ -3,6 +3,7 @@ package com.distribution.data.service.client;
 import com.distribution.data.client.AuthorizedFeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -17,23 +18,23 @@ public interface CpiServiceClient {
     List<CompointDTO> getAllCompoints();
 
 
-    @GetMapping(value = "/api/compoints/{compointCode}" ,
+    @GetMapping(value = "/api/compoint/{compointCode}/{companyCode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    CompointDTO getCompoint(String compointCode , String  companyCode);
+    CompointDTO getCompoint(@PathVariable  String compointCode ,@PathVariable String  companyCode);
 
 
-    @GetMapping(value = "/api/compoints/{compointCode}" ,
+    @GetMapping(value = "/api/compoint/{compointCode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    CompointDTO findOneById(String  compointCode);
+    CompointDTO findOneById(@PathVariable String  compointCode);
 
-    @GetMapping(value = "/api/compoints/bycompanycode" ,
+    @GetMapping(value = "/api/compoints/{companyCode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    List<CompointDTO> getAllByCompanyCode(String companyCode);
+    List<CompointDTO> getAllByCompanyCode(@PathVariable String companyCode);
 }
 

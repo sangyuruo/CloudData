@@ -3,12 +3,20 @@ package com.distribution.data.service;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.service.client.CompointDTO;
 import com.distribution.data.service.client.CpiServiceClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import sun.misc.Contended;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Contended
+@Service
 public class ComPointService {
+
+    @Inject
     private CpiServiceClient cpiServiceClient;
 
 
@@ -18,6 +26,13 @@ public class ComPointService {
 
 
 
+    /**
+     *  Get all the compoints.
+     *
+     *  @return the list of entities
+     */
+
+    @Inject
     public  List<Server> findAllServer() {
         List<CompointDTO> compointDTOList = cpiServiceClient.getAllCompoints();
         List<Server> serverList =new ArrayList<>();
@@ -45,6 +60,15 @@ public class ComPointService {
         return serverList;
     }
 
+    /**
+     *  Get all the companies.
+     *
+     *  @param id the pagination information
+     *  @param companyId the pagination information
+     *  @return the list of entities
+     */
+
+    @Inject
     public Server findOneServer( UUID id,  UUID companyId) {
 
         CompointDTO c= cpiServiceClient.getCompoint(id.toString(), companyId.toString());
@@ -65,6 +89,8 @@ public class ComPointService {
         return server;
     }
 
+
+    @Inject
     public List<Server> findAllByCompanyId(UUID companyId){
 
         List<CompointDTO> cplist = cpiServiceClient.getAllByCompanyCode(companyId.toString());
@@ -92,6 +118,7 @@ public class ComPointService {
         return serverList;
     }
 
+    @Inject
     public Server findOneById(UUID uuid){
 
         CompointDTO c= cpiServiceClient.findOneById(uuid.toString());

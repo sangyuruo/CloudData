@@ -5,15 +5,22 @@ import com.distribution.data.service.client.MeterInfoDTO;
 import com.distribution.data.service.client.MeterServiceClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.inject.Inject;
 import java.io.IOException;
 import java.util.*;
 
 public class MeterInfoService {
+
+    @Inject
     private MeterServiceClient meterServiceClient;
+
+    @Inject
     public MeterInfoService(MeterServiceClient meterServiceClient) {
         this.meterServiceClient = meterServiceClient;
     }
 
+    @Inject
     public List<Meter> findMetersByServerId(String comPointCode){
         List<MeterInfoDTO> meterInfoDTOList =meterServiceClient.getAllMeterInfosByComPointCode(comPointCode);
         List<Meter> meterList =new ArrayList<>();
@@ -50,6 +57,7 @@ public class MeterInfoService {
         return meterList;
     }
 
+    @Inject
     public Meter findOneMeter(String meterCode, String comPointCode, Integer registerCode){
         MeterInfoDTO m =meterServiceClient.getOneMeterInfo(meterCode,comPointCode,registerCode);
         Meter meter=new Meter();
@@ -80,6 +88,8 @@ public class MeterInfoService {
         meter.setDataTypes(map);
         return  meter;
     }
+
+    @Inject
     public Meter findOneById(String meterCode) {
         MeterInfoDTO m = meterServiceClient.getMeterInfoByMeterCode(meterCode);
         Meter meter=new Meter();
@@ -110,6 +120,8 @@ public class MeterInfoService {
         meter.setDataTypes(map);
         return  meter;
     }
+
+    @Inject
     public List<SmartMeter> findAllForService() {
         List<MeterInfoDTO> meterInfoDTOList = meterServiceClient.getAllMeterInfos();
         List<SmartMeter> meterList =new ArrayList<>();
@@ -143,6 +155,7 @@ public class MeterInfoService {
         return meterList;
     }
 
+    @Inject
     public List<SmartMeter> findByServerIdForService(String id) {
         List<MeterInfoDTO> meterInfoDTOList = meterServiceClient.getAllMeterInfosByComPointCode(id);
         List<SmartMeter> meterList =new ArrayList<>();

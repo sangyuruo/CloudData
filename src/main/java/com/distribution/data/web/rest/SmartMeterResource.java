@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
 
 /**
  * REST controller for managing SmartMeter.
