@@ -8,6 +8,7 @@ import com.distribution.data.service.client.MeterInfoDTO;
 import com.distribution.data.service.client.MeterServiceClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import sun.misc.Contended;
 
@@ -32,9 +33,9 @@ public class MeterInfoService {
     public List<Meter> findMetersByServerId(String comPointCode){
         List<MeterInfoDTO> meterInfoDTOList =meterServiceClient.getAllMeterInfosByComPointCode(comPointCode);
         List<Meter> meterList =new ArrayList<>();
-        for (MeterInfoDTO m1: meterInfoDTOList){
+        for (MeterInfoDTO m1: meterInfoDTOList) {
 
-               Meter meter=new Meter();
+            Meter meter = new Meter();
             meter.setId(UUID.fromString(m1.getMeterCode()));
             meter.setServerId(UUID.fromString(m1.getComPointCode()));
             meter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
@@ -53,18 +54,27 @@ public class MeterInfoService {
             meter.setControlAddress(m1.getControlAddress());
             ObjectMapper mapper = new ObjectMapper();
             String jsonString = m1.getControlCommands();
-            Map map= null;
-            try {
-                map = mapper.readValue(jsonString,Map.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            meter.setDataTypes(map);
+
+            this.setDataTypes(jsonString,meter);
             meterList.add(meter);
         }
+
         return meterList;
     }
 
+    private  void setDataTypes(String jsonString,SmartMeter meter ){
+        ObjectMapper mapper = new ObjectMapper();
+        if (StringUtils.isNotBlank(jsonString)) {
+            Map map = null;
+            try {
+                map = mapper.readValue(jsonString, Map.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            meter.setDataTypes(map);
+        }
+    }
 
     public Meter findOneMeter(String meterCode, String comPointCode, Integer registerCode){
         MeterInfoDTO m =meterServiceClient.getOneMeterInfo(meterCode,comPointCode,registerCode);
@@ -169,15 +179,8 @@ public class MeterInfoService {
             smartMeter.setStartOffset(m1.getStartOffset());
             smartMeter.setNumberOfRegisters(m1.getNumberOfRegisters());
             smartMeter.setControlAddress(m1.getControlAddress());
-            ObjectMapper mapper = new ObjectMapper();
             String jsonString = m1.getControlCommands();
-            Map map= null;
-            try {
-                map = mapper.readValue(jsonString,Map.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            smartMeter.setDataTypes(map);
+            this.setDataTypes(jsonString,smartMeter);
             meterList.add(smartMeter);
         }
         return meterList;
@@ -203,15 +206,8 @@ public class MeterInfoService {
             smartMeter.setStartOffset(m1.getStartOffset());
             smartMeter.setNumberOfRegisters(m1.getNumberOfRegisters());
             smartMeter.setControlAddress(m1.getControlAddress());
-            ObjectMapper mapper = new ObjectMapper();
             String jsonString = m1.getControlCommands();
-            Map map= null;
-            try {
-                map = mapper.readValue(jsonString,Map.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            smartMeter.setDataTypes(map);
+            this.setDataTypes(jsonString,smartMeter);
             meterList.add(smartMeter);
         }
         return meterList;

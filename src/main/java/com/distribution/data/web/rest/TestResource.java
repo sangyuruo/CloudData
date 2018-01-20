@@ -36,11 +36,11 @@ public class TestResource {
     }
 
 
-    @GetMapping("/test/EmCloudCpi/compoint/{compointcode}")
+    @GetMapping("/test/EmCloudCpi/compoint/by-companycode/{companycode}")
     @Timed
-    public List<Server> testcpiService(String id) {
+    public List<Server> testcpiService(String companycode) {
         logger.info("start get data from mi");
-        List<Server> serverList = comPointService.findAllByCompanyId(UUID.fromString(id));
+        List<Server> serverList = comPointService.findAllByCompanyId(UUID.fromString(companycode));
         System.out.println(serverList.toString());
         System.out.println("阿===================================紫");
         return serverList;
