@@ -18,20 +18,20 @@ public interface CpiServiceClient {
     List<CompointDTO> getCompoints();
 
 
-    @GetMapping(value = "/api/compoint/{compointcode}/{companycode}" ,
+    @GetMapping(value = "/api/compoint/by-cpicode-companycode/{compointcode}/{companycode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     CompointDTO getCompoint(@PathVariable(value = "compointcode")  String compointCode ,@PathVariable(value = "companycode") String  companyCode);
 
 
-    @GetMapping(value = "/api/compoint/{compointcode}" ,
+    @GetMapping(value = "/api/compoint/by-cpicode/{compointcode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     CompointDTO findOneById(@PathVariable(value = "compointcode") String  compointCode);
 
-    @GetMapping(value = "/api/compoints/{companycode}" ,
+    @GetMapping(value = "/api/compoint/by-companycode/{companycode}" ,
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody

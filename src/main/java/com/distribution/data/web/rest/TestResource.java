@@ -42,7 +42,7 @@ public class TestResource {
         logger.info("start get data from mi");
         List<Server> serverList = comPointService.findAllByCompanyId(UUID.fromString(id));
         System.out.println(serverList.toString());
-        System.out.println("阿紫================阿紫===================阿紫");
+        System.out.println("阿===================================紫");
         return serverList;
     }
 
