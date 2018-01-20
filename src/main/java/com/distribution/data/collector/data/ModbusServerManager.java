@@ -162,7 +162,7 @@ public class ModbusServerManager implements ApplicationListener<ModbusReloadEven
                 request.setRequest(req);
             }
             LocalDateTime st = LocalDateTime.now();
-            Optional<SmartMeterStatus> sms = smartMeterStatusRepository.findOneByName(ms.getId().toString(), st, st);
+            Optional<SmartMeterStatus> sms = smartMeterStatusRepository.findOneByName(ms.getId(), st, st);
             if (!sms.isPresent()) {
                 sms = Optional.ofNullable(new SmartMeterStatus());
                 sms.get().initialize();

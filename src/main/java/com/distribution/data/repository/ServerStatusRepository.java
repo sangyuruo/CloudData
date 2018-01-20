@@ -79,7 +79,7 @@ public class ServerStatusRepository {
 
     public Optional<ServerStatus> findOneByName(UUID serverId, LocalDateTime start, LocalDateTime end) {
     	BoundStatement stmt = findOneByServerIdStmt.bind();
-//        stmt.setUUID("serverId", serverId);
+        //stmt.setUUID("serverId", serverId);
         stmt.setString("serverId", serverId.toString());
         UUID st = UUIDs.startOf(DateUtils.getTodayStart(start).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
         UUID ed = UUIDs.endOf(DateUtils.getTodayEnd(end).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
