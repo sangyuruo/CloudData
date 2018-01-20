@@ -54,7 +54,6 @@ public class MeterInfoService {
             meter.setControlAddress(m1.getControlAddress());
             ObjectMapper mapper = new ObjectMapper();
             String jsonString = m1.getControlCommands();
-
             this.setDataTypes(jsonString,meter);
             meterList.add(meter);
         }
@@ -97,13 +96,7 @@ public class MeterInfoService {
         meter.setControlAddress(m.getControlAddress());
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = m.getControlCommands();
-        Map map= null;
-        try {
-            map = mapper.readValue(jsonString,Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        meter.setDataTypes(map);
+        this.setDataTypes(jsonString,meter);
         return  meter;
     }
 
@@ -130,13 +123,7 @@ public class MeterInfoService {
         meter.setControlAddress(m.getControlAddress());
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = m.getControlCommands();
-        Map map= null;
-        try {
-            map = mapper.readValue(jsonString,Map.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        meter.setDataTypes(map);
+        this.setDataTypes(jsonString,meter);
         return  meter;
     }
 
