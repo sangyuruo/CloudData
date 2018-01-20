@@ -1,6 +1,9 @@
 package com.distribution.data.service;
 import com.distribution.data.collector.cassadra.entity.Meter;
+import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.domain.SmartMeter;
+import com.distribution.data.service.client.CompointDTO;
+import com.distribution.data.service.client.CpiServiceClient;
 import com.distribution.data.service.client.MeterInfoDTO;
 import com.distribution.data.service.client.MeterServiceClient;
 
@@ -19,6 +22,7 @@ public class MeterInfoService {
     @Inject
     private MeterServiceClient meterServiceClient;
 
+    private CpiServiceClient cpiServiceClient;
 
     public MeterInfoService(MeterServiceClient meterServiceClient) {
         this.meterServiceClient = meterServiceClient;
@@ -128,10 +132,29 @@ public class MeterInfoService {
 
 
     public List<SmartMeter> findAllForService() {
+        List<CompointDTO> compointDTOList = cpiServiceClient.getCompoints();
+        Map<String,Server> serverMap =new HashMap<>();
+        Server server =new Server();
+        for (CompointDTO compointDTO :compointDTOList) {
+            server.setId(UUID.fromString(compointDTO.getComPointCode()));
+            server.setCode(""+compointDTO.getRegisterCode());
+            server.setIp(compointDTO.getIp());
+            server.setHostname(compointDTO.getHostName());
+            server.setEnable(compointDTO.isEnable());
+            server.setEncapsulated(compointDTO.isEncapsulated());
+            server.setKeepAlive(compointDTO.isKeepAlive());
+            server.setModel(compointDTO.getConnectMode());
+            server.setPort(compointDTO.getHostPort());
+            server.setReplyTimeout(compointDTO.getReplyTimeout());
+            server.setRequestTimeout(compointDTO.getRequestTimeout());
+            server.setId(UUID.fromString(compointDTO.getComPointCode()));
+            server.setCompanyId(UUID.fromString(compointDTO.getCompanyCode()));
+            serverMap.put(compointDTO.getComPointCode(),server);
+        }
         List<MeterInfoDTO> meterInfoDTOList = meterServiceClient.getAllMeterInfos();
         List<SmartMeter> meterList =new ArrayList<>();
-        SmartMeter smartMeter = new SmartMeter();
         for (MeterInfoDTO m1: meterInfoDTOList){
+            SmartMeter smartMeter = new SmartMeter();
             smartMeter.setId(UUID.fromString(m1.getMeterCode()));
             smartMeter.setServerId(UUID.fromString(m1.getComPointCode()));
             smartMeter.setCompanyId(UUID.fromString(m1.getCompanyCode()));
