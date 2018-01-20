@@ -1,11 +1,11 @@
 package com.distribution.data.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.domain.SmartMeter;
 import com.distribution.data.service.ComPointService;
 import com.distribution.data.service.MeterInfoService;
-import com.distribution.data.service.client.MeterInfoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -54,6 +54,7 @@ public class TestResource {
         System.out.println(list.toString());
         return list;
     }
+
     @GetMapping("/test/EmCloudMi/meter-infos/{meterCode}")
     @Timed
     public SmartMeter testGetMeterInfoByMeterCode(String meterCode) {
@@ -64,6 +65,22 @@ public class TestResource {
         return smartMeter;
     }
 
+    @GetMapping("/test/EmCloudMi/meter-infos/{meterCode}/{comPointCode}/{registerCode}")
+    @Timed
+    public Meter testGetOneMeterInfo(String meterCode, String comPointCode, Integer registerCode) {
+        logger.info("start get data from EmCloudMi");
+        Meter meter = meterInfoService.findOneMeter(meterCode,comPointCode,registerCode);
+        System.out.println(meter.toString());
+        System.out.println("222222");
+        return meter;
+    }
 
-
+    @GetMapping("/test/EmCloudMi/meter-infos/{comPointCode}")
+    @Timed
+    public List<Meter> testGetAllMeterInfosByComPointCode(String comPointCode) {
+        logger.info("start get data from EmCloudMi");
+        List<Meter> list = meterInfoService.findMetersByServerId(comPointCode);
+        System.out.println(list.toString());
+        return list;
+    }
 }

@@ -16,12 +16,12 @@ public interface MeterServiceClient {
     @ResponseBody
     MeterInfoDTO getOneMeterInfo(@PathVariable(value = "meterCode")  String meterCode,@PathVariable(value = "comPointCode")  String comPointCode, @PathVariable(value = "registerCode") Integer registerCode);
 
-    @GetMapping(value = "/api/meter-infos/{comPointCode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/api/meter-infos/by-cpc/{comPointCode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     List<MeterInfoDTO> getAllMeterInfosByComPointCode(@PathVariable(value = "comPointCode") String comPointCode) ;
 
-    @GetMapping(value = "/api/meter-infos/{meterCode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
+    @GetMapping(value = "/api/meter-infos/by-mc/{meterCode}" , consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     MeterInfoDTO getMeterInfoByMeterCode(@PathVariable(value = "meterCode") String meterCode);
