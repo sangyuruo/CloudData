@@ -7,13 +7,16 @@ import com.distribution.data.collector.data.*;
 import com.distribution.data.collector.data.TcpModbusRequest;
 import com.distribution.data.collector.event.MeterDataEvent;
 import com.distribution.data.collector.event.TcpModbusEvent;
+import com.distribution.data.collector.event.ext.MeterDataMsgEvent;
 import com.distribution.data.collector.type.DateUtils;
 import com.distribution.data.collector.data.ModbusServerManager;
 import com.distribution.data.collector.data.TcpModbusResponse;
 import com.distribution.data.collector.data.TcpModbusResult;
 import com.distribution.data.domain.SmartMeterData;
+import com.distribution.data.provider.Producer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
@@ -28,7 +31,8 @@ import java.util.*;
 @Component
 public class MeterDataParserListener implements GenericApplicationListener, ApplicationEventPublisherAware {
 	private static Logger logger = LoggerFactory.getLogger(MeterDataParserListener.class);
-
+    @Autowired
+	private Producer producer;
     private ApplicationEventPublisher eventPublisher;
 
 	@Override
@@ -61,6 +65,7 @@ public class MeterDataParserListener implements GenericApplicationListener, Appl
 		}
     	if(list.size() > 0) {
             eventPublisher.publishEvent(new MeterDataEvent(list));
+            producer.send(new MeterDataMsgEvent("meter_data" , "create",list));
         }
 	}
 

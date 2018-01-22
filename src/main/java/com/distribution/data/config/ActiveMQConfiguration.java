@@ -19,9 +19,9 @@ import javax.jms.Topic;
 
 
 @SuppressWarnings("unused")
-@Configuration
-@EnableJms
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
+//@Configuration
+//@EnableJmsbleJms
+//@AutoConfigureAfter(value = { MetricsConfiguration.class })
 public class ActiveMQConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(ActiveMQConfiguration.class);

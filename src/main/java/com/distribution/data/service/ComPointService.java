@@ -86,7 +86,8 @@ public class ComPointService {
         CompointDTO c = cpiServiceClient.getCompoint(id.toString(), companyId.toString());
 
         Server server = new Server();
-        server.setCode(c.getComPointCode());
+        server.setCode(c.getRegisterCode() + "" );
+        server.setId( UUID.fromString( c.getComPointCode() ) );
         server.setIp(c.getIp());
         server.setHostname(c.getHostName());
         server.setEnable(c.isEnable());
@@ -107,7 +108,8 @@ public class ComPointService {
         List<Server> serverList = new ArrayList<>();
         for (CompointDTO cp : cplist) {
             Server server = new Server();
-            server.setCode(cp.getComPointCode());
+            server.setCode(cp.getRegisterCode() + "" );
+            server.setId( UUID.fromString( cp.getComPointCode() ) );
             server.setIp(cp.getIp());
             server.setHostname(cp.getHostName());
             server.setEnable(cp.isEnable());
@@ -133,7 +135,8 @@ public class ComPointService {
         CompointDTO c = cpiServiceClient.findOneById(uuid.toString());
 
         Server server = new Server();
-        server.setCode(c.getComPointCode());
+        server.setCode(c.getRegisterCode() + "" );
+        server.setId( UUID.fromString( c.getComPointCode() ) );
         server.setIp(c.getIp());
         server.setHostname(c.getHostName());
         server.setEnable(c.isEnable());

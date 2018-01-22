@@ -14,7 +14,7 @@ import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
 
-@Component
+//@Component
 public class MeterStatusAppenderListener implements ApplicationListener<MeterStatusEvent> {
 	@Inject
     private SmartMeterStatusRepository smartMeterStatusRepository;

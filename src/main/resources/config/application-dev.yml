@@ -41,6 +41,10 @@ spring:
             bindings:
                 output:
                     destination: topic-jhipster
+                messageChannel:
+                    destination: em-data
+                subscribableChannel:
+                    destination: em-data
     data:
         cassandra:
             contactPoints: 192.168.1.4

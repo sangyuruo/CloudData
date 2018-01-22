@@ -6,7 +6,10 @@ import com.distribution.data.collector.data.TcpModbusRequest;
 import com.distribution.data.collector.data.TcpModbusResult;
 import com.distribution.data.collector.event.MeterStatusEvent;
 import com.distribution.data.collector.event.TcpModbusEvent;
+import com.distribution.data.collector.event.ext.MeterDataMsgEvent;
+import com.distribution.data.collector.event.ext.MeterStatusMsgEvent;
 import com.distribution.data.domain.SmartMeterStatus;
+import com.distribution.data.provider.Producer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEvent;
@@ -29,12 +32,13 @@ import java.util.UUID;
 public class MeterStatusListener implements GenericApplicationListener, ApplicationEventPublisherAware {
 
     private ApplicationEventPublisher eventPublisher;
-
     @Autowired
-    @Qualifier(value="meterStatusTopic")
-    private Topic meterStatusTopic;
+    private Producer producer;
     @Autowired
-    private JmsTemplate jmsTemplate;
+//    @Qualifier(value="meterStatusTopic")
+//    private Topic meterStatusTopic;
+//    @Autowired
+//    private JmsTemplate jmsTemplate;
 
 	public static synchronized String getUUID(){
 	    UUID uuid=UUID.randomUUID();
@@ -65,6 +69,7 @@ public class MeterStatusListener implements GenericApplicationListener, Applicat
 		}
 		if(list.size() > 0) {
             this.eventPublisher.publishEvent(new MeterStatusEvent(list));
+            producer.send(new MeterStatusMsgEvent( "meter_status","create",list));
 //            this.jmsTemplate.send(this.meterStatusTopic, new MessageCreator() {
 //                @Override
 //                public Message createMessage(Session session) throws JMSException {

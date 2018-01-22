@@ -9,6 +9,7 @@ import com.distribution.data.collector.data.TcpModbusResult;
 import com.distribution.data.collector.event.ServerStatusEvent;
 import com.distribution.data.collector.event.TcpModbusEvent;
 import com.distribution.data.collector.type.Utils;
+import com.distribution.data.provider.Producer;
 import com.distribution.modbus.protocol.msg.*;
 import com.distribution.modbus.protocol.polling.entity.func.Util;
 import com.distribution.modbus.protocol.polling.entity.func.request.PollingHoldingRegistersRequest;
@@ -131,7 +132,7 @@ public class PollingServerRequestHandler extends ModbusPollingServerRequestHandl
 
     private void modbusResponse(List<TcpModbusResult> result, Map<Integer, TcpModbusResponse> map, Server s, LocalDateTime now) {
         //                check =  !Util.isSameDay(s.getStatus().getCreateDate(), now);
-        logger.debug("串口服务器:{}, 编码:{} 数据推送成功！", s.getHostname(), s.getCode());
+        logger.debug("modbusResponse, 串口服务器:{}, 编码:{} 数据推送开始！", s.getHostname(), s.getCode());
         for (TcpModbusRequest tcp : s.getTcpRequests()) {
             if(tcp.getMeter().getLongcode() != null && tcp.getMeter().getLongcode() > 0){
                 continue;
