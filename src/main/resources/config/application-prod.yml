@@ -73,7 +73,7 @@ spring:
 #        keyAlias: EmCloudData
 # ===================================================================
 server:
-    port: 9000
+    port: 7001
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json

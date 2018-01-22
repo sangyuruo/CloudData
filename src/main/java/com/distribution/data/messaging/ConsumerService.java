@@ -16,15 +16,15 @@ public class ConsumerService {
     private final Logger log = LoggerFactory.getLogger(ConsumerService.class);
 
 
-    @StreamListener(ConsumerChannel.CHANNEL)
-    public void consume(Greeting greeting) {
-        log.info("Received message: {}.", greeting.getMessage());
-    }
-
-    @StreamListener(ConsumerChannel.CHANNEL)
-    public void consume(Serializable greeting) {
-        log.info("Received Ser message: {}.", greeting.toString());
-    }
+//    @StreamListener(ConsumerChannel.CHANNEL)
+//    public void consume(Greeting greeting) {
+//        log.info("Received message: {}.", greeting.getMessage());
+//    }
+//
+//    @StreamListener(ConsumerChannel.CHANNEL)
+//    public void consume(Serializable greeting) {
+//        log.info("Received Ser message: {}.", greeting.toString());
+//    }
 
     @StreamListener(ConsumerChannel.CHANNEL)
     public void consume(AbstractMessageEvent messageEvent) {
