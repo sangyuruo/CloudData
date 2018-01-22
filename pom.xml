@@ -539,11 +539,6 @@
             <version>${felix-version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.emcloud</groupId>
-            <artifactId>emcloud-api</artifactId>
-            <version>1.0</version>
-        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>

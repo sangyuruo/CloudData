@@ -69,7 +69,7 @@ public class MeterStatusListener implements GenericApplicationListener, Applicat
 		}
 		if(list.size() > 0) {
             this.eventPublisher.publishEvent(new MeterStatusEvent(list));
-            producer.send(new MeterStatusMsgEvent( "meter_status","create",list));
+            producer.send(new MeterStatusMsgEvent( "create",list));
 //            this.jmsTemplate.send(this.meterStatusTopic, new MessageCreator() {
 //                @Override
 //                public Message createMessage(Session session) throws JMSException {

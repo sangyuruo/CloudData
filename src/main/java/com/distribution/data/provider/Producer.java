@@ -2,32 +2,31 @@ package com.distribution.data.provider;
 
 
 import com.distribution.data.collector.event.ext.MessageEvent;
-import com.distribution.data.domain.Company;
 import com.distribution.data.messaging.ProducerChannel;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsMessagingTemplate;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
-import javax.jms.Queue;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by baling.fang 于 2017年08月12日.
  */
 @Component
 public class Producer {
-
     Logger logger = LoggerFactory.getLogger( Producer.class );
     private MessageChannel channel;
 
     public Producer(ProducerChannel channel) {
         this.channel = channel.messageChannel();
     }
+    AtomicInteger seq =  new AtomicInteger(1);
 
     public void send(Serializable msg) {
         channel.send(
@@ -36,10 +35,20 @@ public class Producer {
     }
 
     public void send(MessageEvent messageEvent) {
+        int curSeq = seq.incrementAndGet();
+        messageEvent.setSeq(curSeq);
         logger.info( "send message type: {}", messageEvent.getType() );
-        channel.send(
-            MessageBuilder.withPayload(messageEvent).build()
-        );
+        StringWriter msg=new StringWriter();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(msg, messageEvent );
+            channel.send(
+                MessageBuilder.withPayload(msg.toString()).build()
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 //    @Autowired
 //    private JmsMessagingTemplate jmsMessagingTemplate;

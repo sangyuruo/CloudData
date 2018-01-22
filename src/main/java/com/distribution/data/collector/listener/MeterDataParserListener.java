@@ -65,7 +65,7 @@ public class MeterDataParserListener implements GenericApplicationListener, Appl
 		}
     	if(list.size() > 0) {
             eventPublisher.publishEvent(new MeterDataEvent(list));
-            producer.send(new MeterDataMsgEvent("meter_data" , "create",list));
+            producer.send(new MeterDataMsgEvent( "create",list));
         }
 	}
 
