@@ -47,41 +47,51 @@ public class ConsumerService {
             messageEvent = mapper.readValue(msg, ObjectMessageEvent.class);
             Object message = messageEvent.getMessage();
             String type = messageEvent.getType();
-            log.info("Received Ser type:{} action:{} message: {}.", messageEvent.getType(), messageEvent.getAction(), message);
-            if (type.equals(MeterDataMsgEvent.METER_DATA_TYPE)) {
-                List<Map> results = (List<Map>) message;
-                for (Map result : results) {
-                    if (result == null)
-                        continue;
-                    try {
-                        SmartMeterData data = (SmartMeterData) mapToObject(result,SmartMeterData.class);
-                    } catch (Exception e) {
-                        log.error( "parse Exception {} . " , e.getMessage() );
-//                        e.printStackTrace();
-                    }
-                }
-                log.info("result size is {} ", results.size());
-            } else if (type.equals(MeterStatusMsgEvent.METER_STATUS_TYPE)) {
-                List<Map> results = (List<Map>) message;
-                for (Map result : results) {
-                    if (result == null)
-                        continue;
-                    try {
-                        SmartMeterStatus data = (SmartMeterStatus) mapToObject(result,SmartMeterStatus.class);
-                    } catch (Exception e) {
-                        log.error( "parse Exception {} . " , e.getMessage() );
-//                        e.printStackTrace();
-                    }
-                }
-                log.info("result size is {} ", results.size());
-            }
+            log.info("Received Ser type:{} action:{} seq: {}.", messageEvent.getType(), messageEvent.getAction(), messageEvent.getSeq() );
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+//    @StreamListener(ConsumerChannel.CHANNEL)
+//    public void consume(MessageEvent msg) {
+//        log.info("Received Ser type:{} action:{} message: {}", msg.getType(), msg.getAction(), msg.getMessage().toString());
+//    }
 
-    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) throws InstantiationException, IntrospectionException, IllegalAccessException {
+    private void handleData(ObjectMessageEvent messageEvent){
+        Object message = messageEvent.getMessage();
+        String type = messageEvent.getType();
+        if (type.equals(MeterDataMsgEvent.METER_DATA_TYPE)) {
+            List<Map> results = (List<Map>) message;
+            for (Map result : results) {
+                if (result == null)
+                    continue;
+                try {
+                    SmartMeterData data = (SmartMeterData) mapToObject(result, SmartMeterData.class);
+                } catch (Exception e) {
+                    log.error("parse Exception {} . ", e.getMessage());
+//                        e.printStackTrace();
+                }
+            }
+            log.info("result size is {} ", results.size());
+        } else if (type.equals(MeterStatusMsgEvent.METER_STATUS_TYPE)) {
+            List<Map> results = (List<Map>) message;
+            for (Map result : results) {
+                if (result == null)
+                    continue;
+                try {
+                    SmartMeterStatus data = (SmartMeterStatus) mapToObject(result, SmartMeterStatus.class);
+                } catch (Exception e) {
+                    log.error("parse Exception {} . ", e.getMessage());
+//                        e.printStackTrace();
+                }
+            }
+            log.info("result size is {} ", results.size());
+        }
+    }
+
+
+    private static Object mapToObject(Map<String, Object> map, Class<?> beanClass) throws InstantiationException, IntrospectionException, IllegalAccessException {
         if (map == null)
             return null;
         Object obj = beanClass.newInstance();

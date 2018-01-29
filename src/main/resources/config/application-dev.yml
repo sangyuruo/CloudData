@@ -42,9 +42,10 @@ spring:
                 output:
                     destination: topic-jhipster
                 messageChannel:
-                    destination: em-data
+                    destination: cloud-data
                 subscribableChannel:
-                    destination: em-data
+                    destination: cloud-data
+                    group: em-cloud-data
     data:
         cassandra:
             contactPoints: 192.168.1.4

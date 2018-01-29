@@ -28,12 +28,6 @@ public class Producer {
     }
     AtomicInteger seq =  new AtomicInteger(1);
 
-    public void send(Serializable msg) {
-        channel.send(
-            MessageBuilder.withPayload(msg).build()
-        );
-    }
-
     public void send(MessageEvent messageEvent) {
         int curSeq = seq.incrementAndGet();
         messageEvent.setSeq(curSeq);
@@ -45,7 +39,7 @@ public class Producer {
             channel.send(
                 MessageBuilder.withPayload(msg.toString()).build()
             );
-        } catch (IOException e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
 
