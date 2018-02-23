@@ -18,7 +18,8 @@ eureka:
         prefer-ip-address: true
     client:
         service-url:
-            defaultZone: http://admin:${jhipster.registry.password}@register.emcloud.com:8761/eureka/
+            defaultZone: ${EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE}
+#            defaultZone: http://admin:${jhipster.registry.password}@register.emcloud.com:8761/eureka/
 
 spring:
     devtools:
@@ -30,14 +31,14 @@ spring:
         stream:
             kafka:
                 binder:
-                    brokers: localhost
-                    zk-nodes: localhost
+                    brokers: ${SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS}
+                    zk-nodes: ${SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES}
             bindings:
                 output:
                     destination: topic-jhipster
     data:
         cassandra:
-            contactPoints: localhost
+            contactPoints: ${SPRING_DATA_CASSANDRA_CONTACTPOINTS}
             protocolVersion: V4
             compression: LZ4
             keyspaceName: EmCloudData

@@ -2,6 +2,8 @@ version: '2'
 services:
     emclouddata-app:
         image: emclouddata
+        ports:
+            - 7001:7001
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
