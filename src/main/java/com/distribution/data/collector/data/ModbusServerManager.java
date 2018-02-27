@@ -1,4 +1,5 @@
 package com.distribution.data.collector.data;
+
 import com.distribution.data.collector.cassadra.entity.Meter;
 import com.distribution.data.collector.cassadra.entity.Server;
 import com.distribution.data.collector.event.ModbusReloadEvent;

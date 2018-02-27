@@ -1,11 +1,13 @@
 package com.distribution.data.messaging;
 
-import com.distribution.data.collector.event.ext.MeterDataMsgEvent;
-import com.distribution.data.collector.event.ext.MeterStatusMsgEvent;
-import com.distribution.data.collector.event.ext.ObjectMessageEvent;
-import com.distribution.data.domain.SmartMeterData;
-import com.distribution.data.domain.SmartMeterStatus;
+import com.emcloud.domain.SmartMeterDataMsg;
+import com.emcloud.domain.SmartMeterStatusMsg;
+import com.emcloud.message.event.MeterDataMsgEvent;
+import com.emcloud.message.event.MeterStatusMsgEvent;
+import com.emcloud.message.event.ObjectMessageEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -47,18 +49,42 @@ public class ConsumerService {
             messageEvent = mapper.readValue(msg, ObjectMessageEvent.class);
             Object message = messageEvent.getMessage();
             String type = messageEvent.getType();
-            log.info("Received Ser type:{} action:{} seq: {}.", messageEvent.getType(), messageEvent.getAction(), messageEvent.getSeq() );
+            log.info("Received Ser type:{} action:{} seq: {}.", messageEvent.getType(), messageEvent.getAction(), messageEvent.getSeq());
+
+            this.handleData(msg,type);
+//            handleData(messageEvent);
+//            if( type.equals( MeterDataMsgEvent.METER_DATA_TYPE )){
+//                List<SmartMeterData> datas = (List<SmartMeterData> ) message;
+//                log.info("message size is {} " , datas.size() );
+//            }else if( type.equals( MeterStatusMsgEvent.METER_STATUS_TYPE  )){
+//                List<SmartMeterStatus> statuses = (List<SmartMeterStatus> ) message;
+//                log.info("message size is {} " , statuses.size() );
+//            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-//    @StreamListener(ConsumerChannel.CHANNEL)
+    //    @StreamListener(ConsumerChannel.CHANNEL)
 //    public void consume(MessageEvent msg) {
 //        log.info("Received Ser type:{} action:{} message: {}", msg.getType(), msg.getAction(), msg.getMessage().toString());
 //    }
+    private void handleData(String message, String type) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        if (type.equals(MeterDataMsgEvent.METER_DATA_TYPE)) {
+//            mapper.readValues(message, MeterDataMsgEvent.class);
+            MeterDataMsgEvent messageEvent = mapper.readValue(message, MeterDataMsgEvent.class );
+            log.info( "size is {}" ,  messageEvent.getMessage().size() );
+        } else if (type.equals(MeterStatusMsgEvent.METER_STATUS_TYPE)) {
+            MeterStatusMsgEvent messageEvent = mapper.readValue(message, MeterStatusMsgEvent.class);
+            log.info( "size is {}" ,  messageEvent.getMessage().size() );
+        }
 
-    private void handleData(ObjectMessageEvent messageEvent){
+    }
+
+    private void handleData(ObjectMessageEvent messageEvent) {
         Object message = messageEvent.getMessage();
         String type = messageEvent.getType();
         if (type.equals(MeterDataMsgEvent.METER_DATA_TYPE)) {
@@ -67,7 +93,7 @@ public class ConsumerService {
                 if (result == null)
                     continue;
                 try {
-                    SmartMeterData data = (SmartMeterData) mapToObject(result, SmartMeterData.class);
+                    SmartMeterDataMsg data = (SmartMeterDataMsg) mapToObject(result, SmartMeterDataMsg.class);
                 } catch (Exception e) {
                     log.error("parse Exception {} . ", e.getMessage());
 //                        e.printStackTrace();
@@ -80,7 +106,7 @@ public class ConsumerService {
                 if (result == null)
                     continue;
                 try {
-                    SmartMeterStatus data = (SmartMeterStatus) mapToObject(result, SmartMeterStatus.class);
+                    SmartMeterStatusMsg data = (SmartMeterStatusMsg) mapToObject(result, SmartMeterStatusMsg.class);
                 } catch (Exception e) {
                     log.error("parse Exception {} . ", e.getMessage());
 //                        e.printStackTrace();
@@ -104,13 +130,13 @@ public class ConsumerService {
                 try {
                     setter.invoke(obj, map.get(property.getName()));
                 } catch (IllegalAccessException e) {
-                    log.error( "parse {} IllegalAccessException. " , property.getName() );
+                    log.error("parse {} IllegalAccessException. ", property.getName());
 //                    e.printStackTrace();
                 } catch (InvocationTargetException e) {
-                    log.error( "parse {} InvocationTargetException. " , property.getName() );
+                    log.error("parse {} InvocationTargetException. ", property.getName());
 //                    e.printStackTrace();
-                }catch (Throwable e) {
-                    log.error( "parse {} Throwable. " , property.getName() );
+                } catch (Throwable e) {
+                    log.error("parse {} Throwable. ", property.getName());
 //                    e.printStackTrace();
                 }
             }

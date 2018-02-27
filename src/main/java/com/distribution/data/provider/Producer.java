@@ -1,9 +1,10 @@
 package com.distribution.data.provider;
 
 
-import com.distribution.data.collector.event.ext.MessageEvent;
 import com.distribution.data.messaging.ProducerChannel;
+import com.emcloud.message.event.MessageEvent;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageChannel;
@@ -32,12 +33,13 @@ public class Producer {
         int curSeq = seq.incrementAndGet();
         messageEvent.setSeq(curSeq);
         logger.info( "send message type: {}", messageEvent.getType() );
-        StringWriter msg=new StringWriter();
+//        StringWriter msg=new StringWriter();
         ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
         try {
-            mapper.writeValue(msg, messageEvent );
+            String msg = mapper.writeValueAsString( messageEvent );
             channel.send(
-                MessageBuilder.withPayload(msg.toString()).build()
+                MessageBuilder.withPayload(msg).build()
             );
         } catch (Throwable e) {
             e.printStackTrace();
